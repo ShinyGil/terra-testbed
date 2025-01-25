@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         branch:
-          - f41
+          - frawhide
           - f40
           - f41
           - el10
