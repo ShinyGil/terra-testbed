@@ -10,60 +10,54 @@ jobs:
         version: ["10"]
         arch: ["x86_64", "aarch64"]
       fail-fast: true
-    runs-on: ${{ matrix.arch == 'aarch64' && 'ARM64' || 'ubuntu-latest' }}
+    runs-on: ${{ (matrix.pkg.arch == 'aarch64' && matrix.pkg.labels['large']) && 'ARM64' || matrix.pkg.arch == 'aarch64' && 'ubuntu-22.04-arm' || matrix.pkg.labels['large'] && 'x86-64-lg' || 'ubuntu-22.04' }}
     container:
-      image: quay.io/centos/centos:stream${{ matrix.version }}-development
+      image: registry.fedoraproject.org/fedora-minimal:${{ matrix.version }}
       options: --cap-add=SYS_ADMIN --privileged
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: el${{ matrix.version }}
-          fetch-depth: 1
-
       - name: Install repositories
         run: |
-          dnf install -y 'dnf-command(config-manager)'
-          dnf config-manager --set-enabled crb
-          dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${{ matrix.version }}.noarch.rpm
-          dnf install -y mock wget git-core openssl-devel cargo podman fuse-overlayfs rpm-build mock
-          dnf builddep -y anda/{terra/{mock-configs,srpm-macros},tools/buildsys/subatomic}/*.spec
+          dnf5 install -y --setopt=install_weak_deps=False curl wget git-core openssl-devel cargo podman fuse-overlayfs
+          dnf5 builddep -y anda/terra/{mock-configs,srpm-macros}/*.spec anda/tools/buildsys/{anda,subatomic}/*.spec
 
       - name: Install Anda
         run: cargo install anda
 
+      - uses: actions/checkout@v4
+        with:
+          ref: f${{ matrix.version }}
+          fetch-depth: 1
       - name: Build terra-mock-configs
         run: |
           echo "PATH=$PATH:/github/home/.cargo/bin" >> $GITHUB_ENV
           export PATH=$PATH:/github/home/.cargo/bin
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          anda build anda/terra/mock-configs/pkg --rpm-builder=rpmbuild
+          anda build -rrpmbuild anda/terra/mock-configs/pkg
+      - name: Install terra-mock-configs
+        run: dnf5 install -y anda-build/rpm/rpms/terra-mock-configs*.rpm
 
       - name: Build anda-srpm-macros
-        run: anda build anda/terra/srpm-macros/pkg --rpm-builder=rpmbuild
-
-      - name: Build terra-release
-        run: anda build anda/terra/release/pkg --rpm-builder=rpmbuild
+        run: anda build -rrpmbuild anda/terra/srpm-macros/pkg
 
       - name: Build Subatomic
-        run: anda build -c terra-el${{ matrix.version }}-dev-${{ matrix.arch }}.cfg anda/tools/buildsys/subatomic/pkg --rpm-builder=rpmbuild
-      - name: Install Subatomic and anda-srpm-macros
-        run: dnf install -y ./anda-build/rpm/rpms/{subatomic,anda-srpm-macros}-*.rpm
+        run: anda build -rrpmbuild anda/tools/buildsys/subatomic/pkg
+      - name: Install Subatomic
+        run: dnf5 install -y ./anda-build/rpm/rpms/subatomic-*.rpm
 
-      - name: Install Build Dependencies for Andaman
-        run: dnf builddep -y anda/tools/buildsys/anda/*.spec
       - name: Build Andaman
-        run: anda build -c terra-el${{ matrix.version }}-dev-${{ matrix.arch }} anda/tools/buildsys/anda/pkg --rpm-builder=rpmbuild
+        run: anda build -rrpmbuild anda/tools/buildsys/anda/pkg
 
       - name: Upload packages to subatomic
         run: |
           subatomic-cli upload --prune \
             --server https://subatomic.fyralabs.com \
             --token ${{ secrets.SUBATOMIC_TOKEN }} \
-            terrael${{ matrix.version }} anda-build/rpm/rpms/*
+            terra${{ matrix.version }} anda-build/rpm/rpms/*
 
       - name: Upload source packages to subatomic
+        if: github.event_name == 'push'
         run: |
           subatomic-cli upload --prune \
             --server https://subatomic.fyralabs.com \
             --token ${{ secrets.SUBATOMIC_TOKEN }} \
-            terrael${{ matrix.version }}-source anda-build/rpm/srpm/*
+            terra${{ matrix.version }}-source anda-build/rpm/srpm/*
