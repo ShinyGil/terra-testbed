@@ -1,0 +1,34 @@
+name: Merge upstream branches
+
+on:
+  schedule:
+    - cron:  '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Merge upstream
+        run: |
+          git config --global user.name 'ShinyGil'
+          git config --global user.email 'rockgrub@protonmail.com'
+          git config --global merge.ours.driver true
+
+          
+          git pull --unshallow
+                               
+                                
+                                
+
+          git remote add upstream https://github.com/terrapkg/packages
+          git fetch upstream f41
+
+
+
+          
+
+          git checkout f41
+          git merge --no-edit upstream/f41
+          git push origin f41
