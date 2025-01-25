@@ -17,7 +17,7 @@ jobs:
           git config --global merge.ours.driver true
 
           
-          git pull --unshallow --ff-only
+          git pull --unshallow
                                
                                 
                                 
@@ -29,6 +29,6 @@ jobs:
 
           
 
-          git checkout playground/frawhide
+          git checkout frawhide
           git merge --no-edit upstream/frawhide
-          git push origin playground/frawhide
+          git push origin frawhide
