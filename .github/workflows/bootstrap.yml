@@ -53,17 +53,3 @@ jobs:
         run: dnf builddep -y anda/tools/buildsys/anda/*.spec
       - name: Build Andaman
         run: anda build -c terra-el${{ matrix.version }}-dev-${{ matrix.arch }} anda/tools/buildsys/anda/pkg --rpm-builder=rpmbuild
-
-      - name: Upload packages to subatomic
-        run: |
-          subatomic-cli upload --prune \
-            --server https://subatomic.fyralabs.com \
-            --token ${{ secrets.SUBATOMIC_TOKEN }} \
-            terrael${{ matrix.version }} anda-build/rpm/rpms/*
-
-      - name: Upload source packages to subatomic
-        run: |
-          subatomic-cli upload --prune \
-            --server https://subatomic.fyralabs.com \
-            --token ${{ secrets.SUBATOMIC_TOKEN }} \
-            terrael${{ matrix.version }}-source anda-build/rpm/srpm/*
