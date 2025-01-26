@@ -38,7 +38,7 @@ jobs:
           else
              echo "arch=$(echo '["aarch64", "x86_64"]' | jq -c .)" >> $GITHUB_OUTPUT
           fi
-    manifest:
+  manifest:
     runs-on: ubuntu-22.04
     outputs:
       build_matrix: ${{ steps.generate_build_matrix.outputs.build_matrix }}
