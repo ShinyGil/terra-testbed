@@ -34,7 +34,7 @@ Patch0:         0000-Fedora-bootstrap-and-extra-build-flags-support.patch
 Patch1:         0001-Enable-build-id-by-default.patch
 ### Zig fetch will recurse onto the cache directory, prevent that from happening.
 # https://github.com/ziglang/zig/pull/19951
-Patch2:         0002-fetch-prevent-global-cache-from-being-copied.patch
+#Patch2:         0002-fetch-prevent-global-cache-from-being-copied.patch
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
