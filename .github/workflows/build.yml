@@ -38,6 +38,14 @@ jobs:
           else
              echo "arch=$(echo '["aarch64", "x86_64"]' | jq -c .)" >> $GITHUB_OUTPUT
           fi
+    manifest:
+    runs-on: ubuntu-22.04
+    outputs:
+      build_matrix: ${{ steps.generate_build_matrix.outputs.build_matrix }}
+    container:
+      image: ghcr.io/terrapkg/builder:frawhide
+      options: --cap-add=SYS_ADMIN --privileged
+    steps:
       - name: Set workspace as safe
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Checkout
@@ -47,7 +55,6 @@ jobs:
       - name: Generate build matrix
         id: generate_build_matrix
         run: anda ci >> $GITHUB_OUTPUT
-        
   build:
     needs: manifest
     strategy:
