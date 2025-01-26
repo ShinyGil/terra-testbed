@@ -61,7 +61,7 @@ jobs:
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Build with Andaman
-        run: anda build ${{ matrix.pkg.pkg }} -c terra-${{ matrix.version }}-${{ matrix.pkg.arch }} ${{ !matrix.pkg.labels.mock == '1' && '-rrpmbuild' || '' }}
+        run: anda build -rrpmbuild -c terra-${{ matrix.version }}-${{ matrix.arch }} anda/${{ matrix.pkg }}pkg
 
       - name: Generating artifact name
         id: art
