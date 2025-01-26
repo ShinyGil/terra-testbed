@@ -61,7 +61,7 @@ jobs:
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Build with Andaman
-        run: anda build -c terra-${{ matrix.version }}-${{ matrix.arch }} anda/${{ matrix.pkg }}pkg
+        run: anda build ${{ matrix.pkg.pkg }} -c terra-${{ matrix.version }}-${{ matrix.pkg.arch }} ${{ !matrix.pkg.labels.mock == '1' && '-rrpmbuild' || '' }}g
 
       - name: Generating artifact name
         id: art
@@ -78,24 +78,3 @@ jobs:
           path: |
             anda-build/rpm/rpms/*
             anda-build/rpm/srpm/*
-
-      - name: Upload packages to subatomic
-        run: |
-          subatomic-cli upload --prune \
-            --server https://subatomic.fyralabs.com \
-            --token ${{ secrets.SUBATOMIC_TOKEN }} \
-            terra${{ matrix.version }}${{ fromJson(steps.art.outputs.labels)['extra'] && '-extras' }} anda-build/rpm/rpms/*
-
-      - name: Upload source packages to subatomic
-        run: |
-          subatomic-cli upload --prune \
-            --server https://subatomic.fyralabs.com \
-            --token ${{ secrets.SUBATOMIC_TOKEN }} \
-            terra${{ matrix.version }}${{ fromJson(steps.art.outputs.labels)['extra'] && '-extras' }}-source anda-build/rpm/srpm/*
-
-      - name: Notify Madoguchi (Success)
-        if: success()
-        run: ./.github/workflows/mg.sh true ${{matrix.pkg}} ${{matrix.version}} ${{matrix.arch}} ${{github.run_id}} ${{secrets.MADOGUCHI_JWT}} $GITHUB_SHA
-      - name: Notify Madoguchi (Failure)
-        if: cancelled() || failure()
-        run: ./.github/workflows/mg.sh false ${{matrix.pkg}} ${{matrix.version}} ${{matrix.arch}} ${{github.run_id}} ${{secrets.MADOGUCHI_JWT}} $GITHUB_SHA
