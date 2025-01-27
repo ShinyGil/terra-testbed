@@ -2,8 +2,8 @@
 %define _ttfontsdir %{_datadir}/fonts/maple
 
 Name:           maple-fonts
-Version:        6.4
-Release:        %autorelease
+Version:        7.0.beta36
+Release:        1%?dist
 Summary:        Open source monospace & nerd font with round corner and ligatures.
 License:        OFL-1.1
 URL:            https://github.com/subframe7536/Maple-font
