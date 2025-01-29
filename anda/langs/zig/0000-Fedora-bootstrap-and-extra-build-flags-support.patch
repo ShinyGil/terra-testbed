@@ -1,6 +1,6 @@
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -922,6 +922,9 @@
+@@ -913,6 +913,9 @@
      target_link_libraries(zig2 LINK_PUBLIC version)
  endif()
 
