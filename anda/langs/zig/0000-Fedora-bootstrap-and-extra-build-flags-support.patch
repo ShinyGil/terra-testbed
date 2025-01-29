@@ -10,10 +10,10 @@
 
  # "-Dno-langref" is hardcoded because stage2 builds lack the `@cImport`
  # feature, which some of the doctests rely on.
-@@ -932,6 +935,8 @@
+@@ -926,6 +926,8 @@
    "-Dtarget=${ZIG_TARGET_TRIPLE}"
    "-Dcpu=${ZIG_TARGET_MCPU}"
- 
+
 +  ${ZIG_EXTRA_BUILD_ARGS}
 +
    -Denable-llvm
