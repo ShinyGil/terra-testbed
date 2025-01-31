@@ -199,7 +199,6 @@ help2man --no-discard-stderr --no-info "./zig-out/bin/zig" --version-option=vers
 %install
 # Ignore standard RPATH for now
 export QA_RPATHS=$(( 0x0001 ))
-%install
 %if %{with bootstrap}
 %cmake_install
 %else
