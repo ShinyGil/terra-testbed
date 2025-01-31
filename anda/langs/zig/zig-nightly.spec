@@ -6,6 +6,53 @@
 %bcond docs     %{without bootstrap}
 %bcond macro    %{without bootstrap}
 %bcond test     1
+%global zig_cache_dir %{builddir}/zig-cache
+%global zig_build_options %{shrink: \
+	
+    --verbose \
+	
+    --release=fast \
+	
+    --summary all \
+	
+    \
+	
+    -Dtarget=native \
+	
+    -Dcpu=baseline \
+	
+    --zig-lib-dir lib \
+	
+    \
+	
+    --cache-dir "%{zig_cache_dir}" \
+	
+    --global-cache-dir "%{zig_cache_dir}" \
+	
+    \
+	
+    -Dversion-string="%{version}" \
+	
+    -Dstatic-llvm=false \
+	
+    -Denable-llvm=true \
+	
+    -Dno-langref=true \
+	
+    -Dstd-docs=false \
+	
+    -Dpie \
+	
+    -Dconfig_h="%{__cmake_builddir}/config.h" \
+	
+    -Dbuild-id="sha1" \
+	
+}
+%global zig_install_options %zig_build_options %{shrink: \
+	
+    --prefix "%{_prefix}" \
+	
+}
 %define prerelease dev.3008+7cef585f5
 
 Name:           zig-nightly
@@ -135,7 +182,11 @@ mkdir -p %{buildroot}%{_bindir}
     -DZIG_VERSION:STRING="%{version}" \
     %{!?with_bootstrap:-DZIG_EXECUTABLE:STRING="/usr/bin/zig"}
 ### Build only stage3 and dependencies. Skips stage1/2 if using /usr/bin/zig
+%if %{with bootstrap}
 %cmake_build --target stage3
+%else
+%cmake_build --target zigcpp
+zig build %{zig_build_options}
 
 ### Zig has no official manpage
 # https://github.com/ziglang/zig/issues/715
@@ -148,8 +199,12 @@ help2man --no-discard-stderr --no-info "%{__cmake_builddir}/stage3/bin/zig" --ve
 %install
 # Ignore standard RPATH for now
 export QA_RPATHS=$(( 0x0001 ))
-
+%install
+%if %{with bootstrap}
 %cmake_install
+%else
+DESTDIR="%{buildroot}" zig build install %{zig_install_options}
+%endif
 
 install -D -pv -m 0644 -t %{buildroot}%{_mandir}/man1/ zig.1
 
