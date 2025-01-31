@@ -27,7 +27,7 @@ Source1:        %{url}/builds/zig-%{version}-%{prerelease}.tar.xz.minisig
 %endif
 Source2:        macros.zig
 ### Support clean build of stage3 with temporary bootstrapped package | Modified to fix Rawhide/GCC 15 builds
-Patch0:         0000-Fedora-bootstrap-and-extra-build-flags-support.patch
+#Patch0:         0000-Fedora-bootstrap-and-extra-build-flags-support.patch
 ### There's no global option for build-id so enable it by default instead of patching every project's build.zig
 #Patch1:         0001-Enable-build-id-by-default.patch
 ### Zig fetch will recurse onto the cache directory, prevent that from happening.
