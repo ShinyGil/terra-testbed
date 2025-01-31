@@ -187,10 +187,10 @@ mkdir -p %{buildroot}%{_bindir}
 %else
 %cmake_build --target zigcpp
 zig build %{zig_build_options}
-
-### Zig has no official manpage
+# Zig has no official manpage
 # https://github.com/ziglang/zig/issues/715
-help2man --no-discard-stderr --no-info "%{__cmake_builddir}/stage3/bin/zig" --version-option=version --output=zig.1
+help2man --no-discard-stderr --no-info "./zig-out/bin/zig" --version-option=version --output=%{name}.1
+%endif
 
 %if %{with docs}
 "%{__cmake_builddir}/stage3/bin/zig" build docs --verbose -Dversion-string="%{version}"
