@@ -8,7 +8,7 @@
 %bcond docs     %{without bootstrap}
 %bcond macro    %{without bootstrap}
 %bcond test     1
-%define prerelease dev.2987+183bb8b08
+%define prerelease dev.3008+7cef585f5
 
 Name:           zig-nightly
 Version:        0.14.0
