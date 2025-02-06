@@ -53,7 +53,7 @@
     --prefix "%{_prefix}" \
 	
 }
-%define prerelease dev.3028+cdc9d65b0
+%define prerelease dev.3050+d72f3d353
 
 Name:           zig-nightly
 Version:        0.14.0
