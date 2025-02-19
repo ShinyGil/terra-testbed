@@ -11,6 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Merge upstream
+        with: with:
+          github_token: ${{ secrets.PUSH_TOKEN }}
         run: |
           git config --global user.name 'ShinyGil'
           git config --global user.email 'rockgrub@disroot.org'
