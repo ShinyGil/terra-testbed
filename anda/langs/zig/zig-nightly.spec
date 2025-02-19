@@ -11,7 +11,7 @@
 	
     --verbose \
 	
-    --release=fast \
+    --release=safe \
 	
     --summary all \
 	
