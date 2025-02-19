@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          github_token: ${{ secrets.PUSH_TOKEN }}
+          token: ${{ secrets.PUSH_TOKEN }}
       - name: Merge upstream
         run: |
           git config --global user.name 'ShinyGil'
