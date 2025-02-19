@@ -11,7 +11,7 @@
 	
     --verbose \
 	
-    --release=safe \
+    --release=fast \
 	
     --summary all \
 	
@@ -53,7 +53,7 @@
     --prefix "%{_prefix}" \
 	
 }
-%define prerelease dev.3258+d2e70ef84
+%define prerelease dev.3267+59dc15fa0
 
 Name:           zig-nightly
 Version:        0.14.0
