@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PUSH_TOKEN }}
       - name: Merge upstream
         run: |
           git config --global user.name 'ShinyGil'
