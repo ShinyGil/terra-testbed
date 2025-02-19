@@ -1,7 +1,7 @@
 %global __requires_exclude ^lib-.*.so            
 %global __provides_exclude ^lib-.*.so
 
-%global ver Audacity-3.7.1
+%global ver split-3.0.3
 %global sanitized_ver %(echo "$( sed 's/Audacity-//' <<< "%{ver}" )")
 
 Name:    audacity-freeworld
