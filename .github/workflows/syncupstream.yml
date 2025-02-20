@@ -21,6 +21,10 @@ jobs:
           git remote add upstream https://github.com/terrapkg/packages
           git fetch upstream frawhide
 
+          git checkout main
+          git merge --no-edit upstream/frawhide
+          git push origin main
+          
           git checkout frawhide
           git merge --no-edit upstream/frawhide
           git push origin frawhide
