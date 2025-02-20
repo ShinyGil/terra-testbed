@@ -25,7 +25,7 @@ jobs:
           git merge --no-edit upstream/frawhide
           git push origin main
           
-          git checkout frawhide
+          git checkout --track origin/frawhide
           git merge --no-edit upstream/frawhide
           git push origin frawhide
 
