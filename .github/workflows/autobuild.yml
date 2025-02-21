@@ -6,12 +6,15 @@ on:
     paths:
       - anda/**
     branches:
+      - main
       - frawhide
   pull_request:
     branches:
+      - main
       - frawhide
   merge_group:
     branches:
+      - main
       - frawhide
   workflow_dispatch:
   workflow_call:
