@@ -2,6 +2,7 @@
 ### Signing key from https://ziglang.org/download
 %global         public_key RWSGOq2NVecA2UPNdBUZykf1CCb147pkmdtYxgb3Ti+JO/wCYvhbAb/U
 %global         llvm_version 19.0.0
+%global prerelease dev.3271+bd237bced
 %bcond bootstrap 1
 %bcond docs     %{without bootstrap}
 %bcond macro    %{without bootstrap}
@@ -53,7 +54,6 @@
     --prefix "%{_prefix}" \
 	
 }
-%define prerelease dev.3271+bd237bced
 
 Name:           zig-nightly
 Version:        0.14.0
