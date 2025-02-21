@@ -90,8 +90,6 @@ BuildRequires:  zlib-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  help2man
 BuildRequires:  minisign
-BuildConflicts: gcc
-BuildConflicts: gcc-c++
 %if %{without bootstrap}
 BuildRequires:  %{name} = %{version}
 %endif
@@ -170,6 +168,8 @@ rm -f stage1/zig1.wasm
 %endif
 
 %build
+export CC=gcc14
+export CXX=g++14
 # C_FLAGS: wasm2c output generates a lot of noise with -Wunused.
 # EXTRA_BUILD_ARGS: apply --build-id=sha1 even if running unpatched stage2 compiler.
 mkdir -p %{buildroot}%{_bindir}
