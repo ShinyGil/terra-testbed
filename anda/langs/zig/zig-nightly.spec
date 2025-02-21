@@ -55,72 +55,72 @@
 }
 %define prerelease dev.3271+bd237bced
 
-Name:            zig-nightly
-Version:         0.14.0
+Name:           zig-nightly
+Version:        0.14.0
 %if "%{prerelease}" == "1"
-Release:         1%{?dist}
+Release:        1%{?dist}
 %else
-Release:         0^%{prerelease}%{?dist}
+Release:        0^%{prerelease}%{?dist}
 %endif
-Summary:         Programming language for maintaining robust, optimal, and reusable software
-License:         MIT and NCSA and LGPLv2+ and LGPLv2+ with exceptions and GPLv2+ and GPLv2+ with exceptions and BSD and Inner-Net and ISC and Public Domain and GFDL and ZPLv2.1
-URL:             https://ziglang.org
+Summary:        Programming language for maintaining robust, optimal, and reusable software
+License:        MIT and NCSA and LGPLv2+ and LGPLv2+ with exceptions and GPLv2+ and GPLv2+ with exceptions and BSD and Inner-Net and ISC and Public Domain and GFDL and ZPLv2.1
+URL:            https://ziglang.org
 %if "%{prerelease}" == "1"
-Source0:         %{url}/builds/zig-%{version}.tar.xz
-Source1:         %{url}/builds/zig-%{version}.tar.xz.minisig
+Source0:        %{url}/builds/zig-%{version}.tar.xz
+Source1:        %{url}/builds/zig-%{version}.tar.xz.minisig
 %else
-Source0:         %{url}/builds/zig-%{version}-%{prerelease}.tar.xz
-Source1:         %{url}/builds/zig-%{version}-%{prerelease}.tar.xz.minisig
+Source0:        %{url}/builds/zig-%{version}-%{prerelease}.tar.xz
+Source1:        %{url}/builds/zig-%{version}-%{prerelease}.tar.xz.minisig
 %endif
-Source2:         https://src.fedoraproject.org/rpms/zig/raw/rawhide/f/macros.zig
+Source2:        https://src.fedoraproject.org/rpms/zig/raw/rawhide/f/macros.zig
 ### Support clean build of stage3 with temporary bootstrapped package | Modified to fix Rawhide/GCC 15 builds
-Patch0:          0000-Fedora-bootstrap-and-extra-build-flags-support.patch
+Patch0:         0000-Fedora-bootstrap-and-extra-build-flags-support.patch
 ### There's no global option for build-id so enable it by default instead of patching every project's build.zig
-Patch1:          0001-Enable-build-id-by-default.patch
+Patch1:         0001-Enable-build-id-by-default.patch
 ### Zig fetch will recurse onto the cache directory, prevent that from happening.
 # https://github.com/ziglang/zig/pull/19951
-Patch2:          0002-fetch-prevent-global-cache-from-being-copied.patch
-BuildRequires:   gcc14
-BuildRequires:   gcc14-c++
-BuildRequires:   cmake
-BuildRequires:   llvm-devel
-BuildRequires:   clang-devel
-BuildRequires:   lld-devel
-BuildRequires:   zlib-devel
-BuildRequires:   libxml2-devel
-BuildRequires:   help2man
-BuildRequires:   minisign
-BuildConflicts:  gcc
-BuildConcflicts: gcc-c++
+Patch2:         0002-fetch-prevent-global-cache-from-being-copied.patch
+BuildRequires:  gcc14
+BuildRequires:  gcc14-c++
+BuildRequires:  cmake
+BuildRequires:  llvm-devel
+BuildRequires:  clang-devel
+BuildRequires:  lld-devel
+BuildRequires:  zlib-devel
+BuildRequires:  libxml2-devel
+BuildRequires:  help2man
+BuildRequires:  minisign
+BuildConflicts: gcc
+BuildConflicts: gcc-c++
 %if %{without bootstrap}
-BuildRequires:   %{name} = %{version}
+BuildRequires:  %{name} = %{version}
 %endif
 %if %{with test}
-BuildRequires:   elfutils-libelf-devel
-BuildRequires:   libstdc++-static
+BuildRequires:  elfutils-libelf-devel
+BuildRequires:  libstdc++-static
 %endif
-Requires:        %{name}-libs = %{version}
+Requires:       %{name}-libs = %{version}
 Conflicts:	    zig
 ### These packages are bundled as source
 # Apache-2.0 WITH LLVM-exception OR NCSA OR MIT
-Provides:       bundled(compiler-rt) = %{llvm_version}
+Provides:      bundled(compiler-rt) = %{llvm_version}
 # LGPLv2+, LGPLv2+ with exceptions, GPLv2+, GPLv2+ with exceptions, BSD, Inner-Net, ISC, Public Domain and GFDL
-Provides:       bundled(glibc) = 2.34
+Provides:      bundled(glibc) = 2.34
 # Apache-2.0 WITH LLVM-exception OR MIT OR NCSA
-Provides:       bundled(libcxx) = %{llvm_version}
+Provides:      bundled(libcxx) = %{llvm_version}
 # Apache-2.0 WITH LLVM-exception OR MIT OR NCSA
-Provides:       bundled(libcxxabi) = %{llvm_version}
+Provides:      bundled(libcxxabi) = %{llvm_version}
 # NCSA
-Provides:       bundled(libunwind) = %{llvm_version}
+Provides:      bundled(libunwind) = %{llvm_version}
 # BSD, LGPG, ZPL
-Provides:       bundled(mingw) = 10.0.0
+Provides:      bundled(mingw) = 10.0.0
 # MIT
-Provides:       bundled(musl) = 1.2.4
+Provides:      bundled(musl) = 1.2.4
 # Apache-2.0 WITH LLVM-exception AND Apache-2.0 AND MIT AND BSD-2-Clause
-Provides:       bundled(wasi-libc) = 3189cd1ceec8771e8f27faab58ad05d4d6c369ef
-Provides:       zig-dev = %{version}-%{release}
-ExclusiveArch:  %{zig_arches}
-Packager:       ShinyGil <rockgrub@disroot.org>
+Provides:      bundled(wasi-libc) = 3189cd1ceec8771e8f27faab58ad05d4d6c369ef
+Provides:      zig-dev = %{version}-%{release}
+ExclusiveArch: %{zig_arches}
+Packager:      ShinyGil <rockgrub@disroot.org>
 
 %description
 Zig is an open-source programming language designed for robustness, optimality,
@@ -128,8 +128,8 @@ and clarity. This package provides dev (nightly) builds of Zig.
 
 ### The Zig stdlib only contains uncompiled code
 %package libs
-Summary:         Zig Standard Library
-BuildArch:       noarch
+Summary:        Zig Standard Library
+BuildArch:      noarch
 Conflicts:	    zig-libs
 
 %description libs
@@ -137,21 +137,21 @@ zig Standard Library
 
 %if %{with docs}
 %package doc
-Summary:         Documentation for Zig
-BuildArch:       noarch
-Requires:        %{name} = %{version}
+Summary:        Documentation for Zig
+BuildArch:      noarch
+Requires:       %{name} = %{version}
 
 %description doc
 Documentation for Zig. For more information, visit %{url}
 %endif
 
 %if %{with macro}
-%package         rpm-macros
-Summary:         Common RPM macros for zig
-Requires:        rpm
-BuildArch:       noarch
+%package        rpm-macros
+Summary:        Common RPM macros for zig
+Requires:       rpm
+BuildArch:      noarch
 
-%description     rpm-macros
+%description    rpm-macros
 This package contains common RPM macros for zig.
 %endif
 
