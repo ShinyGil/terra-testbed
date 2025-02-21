@@ -31,7 +31,7 @@
 	
     \
 	
-    -Dversion-string="%{version}" \
+    -Dversion-string="%{version}-%{prerelease}" \
 	
     -Dstatic-llvm=false \
 	
@@ -53,7 +53,7 @@
     --prefix "%{_prefix}" \
 	
 }
-%define prerelease dev.3267+59dc15fa0
+%define prerelease dev.3271+bd237bced
 
 Name:           zig-nightly
 Version:        0.14.0
