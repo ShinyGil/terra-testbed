@@ -168,8 +168,8 @@ rm -f stage1/zig1.wasm
 %endif
 
 %build
-export CC=gcc14
-export CXX=g++14
+export CC=gcc-14
+export CXX=g++-14
 # C_FLAGS: wasm2c output generates a lot of noise with -Wunused.
 # EXTRA_BUILD_ARGS: apply --build-id=sha1 even if running unpatched stage2 compiler.
 mkdir -p %{buildroot}%{_bindir}
