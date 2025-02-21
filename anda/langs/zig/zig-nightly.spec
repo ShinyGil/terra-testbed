@@ -58,7 +58,7 @@
 Name:           zig-nightly
 Version:        0.14.0
 %if "%{prerelease}" == "1"
-Release:        2%{?dist}
+Release:        1%{?dist}
 %else
 Release:        0^%{prerelease}%{?dist}
 %endif
