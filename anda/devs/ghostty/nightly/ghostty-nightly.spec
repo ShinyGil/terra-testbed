@@ -1,9 +1,9 @@
-%global commit 38908e01268298ced33b7b6835e49b8c6d437e12
+%global commit 870b74f4da75ef2baa1f430602c901cb1405802e
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global fulldate 2025-02-18
+%global fulldate 2025-02-22
 %global commit_date %(echo %{fulldate} | sed 's/-//g')
 %global public_key RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
-%global base_ver 1.1.2
+%global base_ver v1.1.2
 %global dev_ver 1.1.3
 %if 0%{?fedora} <= 40
 %global cache_dir %{_builddir}/zig-cache
