@@ -80,8 +80,8 @@ Patch1:         0001-Enable-build-id-by-default.patch
 ### Zig fetch will recurse onto the cache directory, prevent that from happening.
 # https://github.com/ziglang/zig/pull/19951
 Patch2:         0002-fetch-prevent-global-cache-from-being-copied.patch
-BuildRequires:  gcc14
-BuildRequires:  gcc14-c++
+BuildRequires:  gcc
+BuildRequires:  gcc-c++
 BuildRequires:  cmake
 BuildRequires:  llvm-devel
 BuildRequires:  clang-devel
@@ -168,8 +168,6 @@ rm -f stage1/zig1.wasm
 %endif
 
 %build
-export CC=gcc-14
-export CXX=g++-14
 # C_FLAGS: wasm2c output generates a lot of noise with -Wunused.
 # EXTRA_BUILD_ARGS: apply --build-id=sha1 even if running unpatched stage2 compiler.
 mkdir -p %{buildroot}%{_bindir}
