@@ -1,0 +1,39 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -913,6 +913,9 @@
+     target_link_libraries(zig2 LINK_PUBLIC version)
+ endif()
+
++# Fedora customizations
++set(ZIG_EXTRA_BUILD_ARGS "" CACHE STRING "Extra flags for stage3 build")
++set(ZIG_EXECUTABLE "$<TARGET_FILE:zig2>" CACHE STRING "Compiler command to use for stage3 build")
+
+ # "-Dno-langref" is hardcoded because stage2 builds lack the `@cImport`
+ # feature, which some of the doctests rely on.
+@@ -926,6 +926,8 @@
+   "-Dtarget=${ZIG_TARGET_TRIPLE}"
+   "-Dcpu=${ZIG_TARGET_MCPU}"
+
++  ${ZIG_EXTRA_BUILD_ARGS}
++
+   -Denable-llvm
+   "-Dconfig_h=${ZIG_CONFIG_H_OUT}"
+
+@@ -978,15 +983,16 @@
+
+ add_custom_command(
+   OUTPUT "${PROJECT_BINARY_DIR}/stage3/bin/zig"
+-  COMMAND zig2 build --prefix "${PROJECT_BINARY_DIR}/stage3" ${ZIG_BUILD_ARGS}
++  COMMAND ${ZIG_EXECUTABLE} build --prefix "${PROJECT_BINARY_DIR}/stage3" ${ZIG_BUILD_ARGS}
+   COMMENT "Building stage3"
++  DEPENDS zigcpp
+   WORKING_DIRECTORY "${ZIG2_WORKING_DIR}"
+ )
+
+ set(ZIG_EXECUTABLE "$<TARGET_FILE:zig2>")
+
+ install(CODE "set(ZIG_EXECUTABLE \"${ZIG_EXECUTABLE}\")")
+ install(CODE "set(ZIG_BUILD_ARGS \"${ZIG_BUILD_ARGS}\")")
+ install(CODE "set(ZIG2_WORKING_DIR \"${ZIG2_WORKING_DIR}\")")
+ install(CODE "set(CMAKE_INSTALL_PREFIX \"${CMAKE_INSTALL_PREFIX}\")")
+ install(SCRIPT cmake/install.cmake)
