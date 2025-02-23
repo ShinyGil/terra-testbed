@@ -1,6 +1,6 @@
-%global commit 870b74f4da75ef2baa1f430602c901cb1405802e
+%global commit bdf0f27d1a01322f7abb753658e79c60d39114a0
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global fulldate 2025-02-22
+%global fulldate 2025-02-23
 %global commit_date %(echo %{fulldate} | sed 's/-//g')
 %global public_key RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
 %global ver 1.1.3
@@ -12,7 +12,7 @@
 
 Name:           ghostty-nightly
 Version:        %{ver}~tip^%{commit_date}git%{shortcommit}
-Release:        1%{?dist}
+Release:        1%?dist
 %if 0%{?fedora} <= 41
 Epoch:          1
 %endif
