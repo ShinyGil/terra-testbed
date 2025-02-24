@@ -2,7 +2,7 @@
 %define debug_package %nil
 
 Name:          arduino-cli
-Version:       1.1.1
+Version:       1.2.0
 Release:       1%?dist
 Summary:       Arduino command line tool.
 License:       GPLv3
