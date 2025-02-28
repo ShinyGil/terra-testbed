@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Merge upstream
         run: |
-          git config --global user.name 'ShinyGil'
+          git config --global user.name 'RockGrub'
           git config --global user.email 'rockgrub@disroot.org'
           git config --global merge.ours.driver true
 
