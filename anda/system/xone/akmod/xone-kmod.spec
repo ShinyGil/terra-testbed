@@ -7,8 +7,8 @@
 %global real_name xone
 
 Name:           %{real_name}-kmod
-Version:        %{ver}^%{date}git.%{shortcommit}
-Release:        1%{?dist}
+Version:        0.3^20241223git.6b9d59a
+Release:        1%?dist
 Summary:        Linux kernel driver for Xbox One and Xbox Series X|S accessories
 License:        GPL-2.0-or-later
 URL:            https://github.com/dlundqvist/xone
