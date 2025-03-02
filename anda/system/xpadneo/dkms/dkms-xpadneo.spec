@@ -6,7 +6,7 @@
 %global dkms_name xpadneo
 
 Name:           dkms-%{dkms_name}
-Version:        0.9.7^20241224git.8d20a23
+Version:        %{ver}^%{date}git.%{shortcommit}
 Release:        1%?dist
 Summary:        Advanced Linux Driver for Xbox One Wireless Gamepad
 License:        GPL-3.0
@@ -20,7 +20,7 @@ Requires:       bluez-tools
 Requires:       %{dkms_name}-kmod-common = %{?epoch:%{epoch}:}%{version}
 Requires:       dkms
 BuildArch:      noarch
-Packager:       ShinyGil <rockgrub@disroot.org>
+Packager:       Gilver E. <rockgrub@disroot.org>
 
 %description
 Advanced Linux Driver for Xbox One Wireless Gamepad.
@@ -63,5 +63,5 @@ dkms remove -m %{dkms_name} -v %{version} -q --all --rpm_safe_upgrade || :
 %endif
 
 %changelog
-* Thu Feb 27 2025 ShinyGil <rockgrub@disroot.org>
+* Thu Feb 27 2025 Gilver E. <rockgrub@disroot.org>
 - Initial package

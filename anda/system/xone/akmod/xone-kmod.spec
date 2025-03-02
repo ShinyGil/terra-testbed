@@ -7,7 +7,7 @@
 %global real_name xone
 
 Name:           %{real_name}-kmod
-Version:        0.3^20241223git.6b9d59a
+Version:        %{ver}^%{date}git.%{shortcommit}
 Release:        1%?dist
 Summary:        Linux kernel driver for Xbox One and Xbox Series X|S accessories
 License:        GPL-2.0-or-later
@@ -16,7 +16,7 @@ Source0:        %{url}/archive/%{commit}.tar.gz#/xone-%{shortcommit}.tar.gz
 BuildRequires:  kmodtool
 BuildRequires:  systemd-rpm-macros
 Requires:       %{real_name}-kmod-common = %{?epoch:%{epoch}:}%{version}
-Packager:       ShinyGil <rockgrub@disroot.org>
+Packager:       Gilver E. <rockgrub@disroot.org>
 
 %{expand:%(kmodtool --target %{_target_cpu} --repo terra --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
@@ -59,5 +59,5 @@ done
 %{_modulesloaddir}/%{real_name}.conf
 
 %changelog
-* Thu Feb 27 2025 ShinyGil <rockgrub@disroot.org>
+* Thu Feb 27 2025 Gilver E. <rockgrub@disroot.org>
 - Initial package

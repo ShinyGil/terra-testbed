@@ -6,7 +6,7 @@
 %global dkms_name xone
 
 Name:           dkms-%{dkms_name}
-Version:        0.3^20241223git.6b9d59a
+Version:        %{ver}^%{date}git.%{shortcommit}
 Release:        1%?dist
 Summary:        Linux kernel driver for Xbox One and Xbox Series X|S accessories
 License:        GPL-2.0-or-later
@@ -18,7 +18,7 @@ BuildRequires:  systemd-rpm-macros
 Requires:       %{dkms_name}-kmod-common = %{?epoch:%{epoch}:}%{version}
 Requires:       dkms
 BuildArch:      noarch
-Packager:       ShinyGil <rockgrub@disroot.org>
+Packager:       Gilver E. <rockgrub@disroot.org>
 
 %description
 Linux kernel driver for Xbox One and Xbox Series X|S accessories.
@@ -60,5 +60,5 @@ dkms remove -m %{dkms_name} -v %{version} -q --all --rpm_safe_upgrade || :
 %endif
 
 %changelog
-* Thu Feb 27 2025 ShinyGil <rockgrub@disroot.org>
+* Thu Feb 27 2025 Gilver E. <rockgrub@disroot.org>
 - Initial package
