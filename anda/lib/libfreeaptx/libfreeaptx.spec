@@ -1,10 +1,10 @@
-%global commit c176b7de9c2017d0fc1877659cea3bb6c330aafa
+%global commit ad6748ac8b2ebbfae7d0c5608434f60592d61edc
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global commit_date 20210809
+%global commit_date 20250303
 
 Name:       libfreeaptx
 Version:    0.1.1.%{commit_date}git%{shortcommit}
-Release:    1%{?dist}
+Release:    1%?dist
 Summary:    Free implementation of Audio Processing Technology codec (aptX)
 License:    LGPLv2+
 URL:        https://github.com/iamthehorker/libfreeaptx
