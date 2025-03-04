@@ -2,7 +2,7 @@
 ### Signing key from https://ziglang.org/download
 %global         public_key RWSGOq2NVecA2UPNdBUZykf1CCb147pkmdtYxgb3Ti+JO/wCYvhbAb/U
 %global         llvm_version 19.0.0
-%global prerelease dev.3460+6d29ef0ba
+%global prerelease dev.3462+edabcf619
 %bcond bootstrap 1
 %bcond docs     %{without bootstrap}
 %bcond macro    %{without bootstrap}
