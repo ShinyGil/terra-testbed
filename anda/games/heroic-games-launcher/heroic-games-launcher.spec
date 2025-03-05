@@ -14,7 +14,6 @@ Source0:       https://github.com/Heroic-Games-Launcher/%{git_name}/archive/refs
 Source1:       https://raw.githubusercontent.com/Heroic-Games-Launcher/%{git_name}/refs/heads/main/flatpak/com.heroicgameslauncher.hgl.desktop
 ### Makes it actually sign the package, though will say it was skipped first.
 Patch0:        afterPack.diff
-BuildRequires: bsdtar
 BuildRequires: desktop-file-utils
 ### Electron builder builds some things with GCC(++) and Make
 BuildRequires: gcc
