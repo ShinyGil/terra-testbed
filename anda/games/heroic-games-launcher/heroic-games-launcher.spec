@@ -49,7 +49,7 @@ Heroic is a Free and Open Source Epic, GOG, and Amazon Prime Games launcher for 
 
 %prep
 %autosetup -n %{git_name}-%{version} -p1
-sed -i 's/Exec=.*%u/Exec=\/usr\/share\/heroic\/heroic %u/g' %{SOURCE1}
+sed -i 's/Exec=.*%u/Exec=\/usr\/share\/heroic\/heroic %U/g' %{SOURCE1}
 sed -i 's/Icon=.*/Icon=heroic/g' %{SOURCE1}
 
 %build
@@ -60,10 +60,10 @@ pnpm dist:linux
 %install
 mkdir -p %{buildroot}%{_datadir}/heroic
 %ifarch aarch64
-mv $(find dist/linux-arm64-unpacked -name "*LICENSE*") %{buildroot}
+mv $(find dist/linux-arm64-unpacked -name "*LICENSE*") .
 mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
 %else
-mv $(find dist/linux-unpacked -name "*LICENSE*") %{buildroot}
+mv $(find dist/linux-unpacked -name "*LICENSE*") .
 mv dist/linux-unpacked/* %{buildroot}%{_datadir}/heroic
 %endif
 mkdir -p %{buildroot}%{_bindir}
