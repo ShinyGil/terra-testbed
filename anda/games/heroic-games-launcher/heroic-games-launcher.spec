@@ -60,18 +60,10 @@ pnpm dist:linux
 %install
 mkdir -p %{buildroot}%{_datadir}/heroic
 %ifarch aarch64
-%if 0%{?fedora} <= 40
-mv $(find dist/linux-arm64-unpacked -name "*LICENSE*") %{_builddir}
-%else
-mv $(find dist/linux-arm64-unpacked -name "*LICENSE*") %{builddir}
-%endif
+mv $(find dist/linux-arm64-unpacked -name "*LICENSE*") %{buildroot}
 mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
 %else
-%if 0%{?fedora} <= 40
-mv $(find dist/linux-unpacked -name "*LICENSE*") %{_builddir}
-%else
-mv $(find dist/linux-unpacked -name "*LICENSE*") %{builddir}
-%endif
+mv $(find dist/linux-unpacked -name "*LICENSE*") %{buildroot}
 mv dist/linux-unpacked/* %{buildroot}%{_datadir}/heroic
 %endif
 mkdir -p %{buildroot}%{_bindir}
