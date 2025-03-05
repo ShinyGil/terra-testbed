@@ -61,14 +61,16 @@ pnpm dist:linux
 mkdir -p %{buildroot}%{_datadir}/heroic
 mkdir -p %{buildroot}%{_licensedir}
 %ifarch aarch64
-mv $(find dist/linux-arm64-unpacked | grep -i LICENSE) %{buildroot}%{_licensedir}
+mv $(find dist/linux-arm64-unpacked | grep -i LICENSE) %{_builddir}
 mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
 %else
-mv $(find dist/linux-unpacked | grep -i LICENSE) %{buildroot}%{_licensedir}
+mv $(find dist/linux-unpacked | grep -i LICENSE) %{_builddir}
 mv dist/linux-unpacked/* %{buildroot}%{_datadir}/heroic
 %endif
 mkdir -p %{buildroot}%{_bindir}
+# Make names executable
 ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/%{name}
+ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/heroic
 install -Dm644 public/icon.png %{buildroot}%{_datadir}/pixmaps/heroic.png
 install -Dm644 dist/.icon-set/icon_16x16.png %{buildroot}%{_iconsdir}/hicolor/16x16/heroic.png
 install -Dm644 dist/.icon-set/icon_32x32.png %{buildroot}%{_iconsdir}/hicolor/32x32/heroic.png
@@ -90,8 +92,10 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/heroic.desktop
 %license LICENSE
 %license LICENSE.electron.txt
 %license LICENSES.chromium.html
-%{_datadir}/heroic
+%dir %{_datadir}/heroic
+%{_datadir}/heroic/*
 %{_datadir}/pixmaps/heroic.png
+%{_bindir}/heroic
 %{_bindir}/heroic-games-launcher
 %{_datadir}/applications/heroic.desktop
 %{_iconsdir}/hicolor/16x16/heroic.png
