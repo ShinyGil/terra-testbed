@@ -37,7 +37,7 @@ Requires:      which
 Recommends:    gamemode
 Recommends:    mangohud
 Recommends:    umu-launcher
-# Woarkaround for GNOME issues with libei
+# Workaround for GNOME issues with libei
 Recommends:    (extest if gnome-shell)
 Provides:      bundled(gogdl)
 Provides:      bundled(legendary)
@@ -60,7 +60,11 @@ pnpm dist:linux
 
 %install
 mkdir -p %{buildroot}%{_datadir}/heroic
+%ifarch aarch64
+mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
+%else
 mv dist/linux-unpacked/* %{buildroot}%{_datadir}/heroic
+%endif
 mkdir -p %{buildroot}%{_bindir}
 ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/%{name}
 install -Dm644 public/icon.png %{buildroot}%{_datadir}/pixmaps/heroic.png
@@ -81,23 +85,23 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/heroic.desktop
 %doc     README.md
 %doc     CODE_OF_CONDUCT.md
 %license COPYING
-%_datadir/heroic
-%_datadir/pixmaps/heroic.png
-%_bindir/heroic-games-launcher
-%_datadir/applications/heroic.desktop
-%_iconsdir/hicolor/16x16/heroic.png
-%_iconsdir/hicolor/32x32/heroic.png
-%_iconsdir/hicolor/48x48/heroic.png
-%_iconsdir/hicolor/64x64/heroic.png
-%_iconsdir/hicolor/128x128/heroic.png
-%_iconsdir/hicolor/256x256/heroic.png
-%_iconsdir/hicolor/512x512/heroic.png
-%_iconsdir/hicolor/1024x1024/heroic.png
+%{_datadir}/heroic
+%{_datadir}/pixmaps/heroic.png
+%{_bindir}/heroic-games-launcher
+%{_datadir}/applications/heroic.desktop
+%{_iconsdir}/hicolor/16x16/heroic.png
+%{_iconsdir}/hicolor/32x32/heroic.png
+%{_iconsdir}/hicolor/48x48/heroic.png
+%{_iconsdir}/hicolor/64x64/heroic.png
+%{_iconsdir}/hicolor/128x128/heroic.png
+%{_iconsdir}/hicolor/256x256/heroic.png
+%{_iconsdir}/hicolor/512x512/heroic.png
+%{_iconsdir}/hicolor/1024x1024/heroic.png
 
 %changelog
-* Thu Jan 30 2025 Gilver E. <rockgrub@disroot.org>
-- Initial package
 * Sun Mar 02 2025 Gilver E. <rockgrub@disroot.org>
 - Update to 2.16.0
 - Fix incorrect RPM dependencies
+* Thu Jan 30 2025 Gilver E. <rockgrub@disroot.org>
+- Initial package
 
