@@ -14,7 +14,6 @@ Source0:       https://github.com/Heroic-Games-Launcher/%{git_name}/archive/refs
 Source1:       https://raw.githubusercontent.com/Heroic-Games-Launcher/%{git_name}/refs/heads/main/flatpak/com.heroicgameslauncher.hgl.desktop
 ### Makes it actually sign the package, though will say it was skipped first.
 Patch0:        afterPack.diff
-BuildRequires: bsdtar
 BuildRequires: desktop-file-utils
 ### Electron builder builds some things with GCC(++) and Make
 BuildRequires: gcc
@@ -37,12 +36,11 @@ Requires:      which
 Recommends:    gamemode
 Recommends:    mangohud
 Recommends:    umu-launcher
-# Woarkaround for GNOME issues with libei
+# Workaround for GNOME issues with libei
 Recommends:    (extest if gnome-shell)
 Provides:      bundled(gogdl)
 Provides:      bundled(legendary)
 Provides:      bundled(nile)
-ExclusiveArch: x86_64
 AutoReq:       no
 Packager:      Gilver E. <rockgrub@disroot.org>
 
@@ -57,14 +55,29 @@ sed -i 's/Icon=.*/Icon=heroic/g' %{SOURCE1}
 %build
 pnpm install
 pnpm run download-helper-binaries
-### RPM doesn't work and it needs a package format to generate icons, AppImage isn't a good option for packaging because it will try to self update
-pnpm dist:linux pacman
+pnpm dist:linux
 
 %install
 mkdir -p %{buildroot}%{_datadir}/heroic
+%ifarch aarch64
+%if 0%{?fedora} <= 40
+mv $(find dist/linux-arm64-unpacked -name "*LICENSE*") %{_builddir}
+%else
+mv $(find dist/linux-arm64-unpacked -name "*LICENSE*") %{builddir}
+%endif
+mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
+%else
+%if 0%{?fedora} <= 40
+mv $(find dist/linux-unpacked -name "*LICENSE*") %{_builddir}
+%else
+mv $(find dist/linux-unpacked -name "*LICENSE*") %{builddir}
+%endif
 mv dist/linux-unpacked/* %{buildroot}%{_datadir}/heroic
+%endif
 mkdir -p %{buildroot}%{_bindir}
+# Make names executable
 ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/%{name}
+ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/heroic
 install -Dm644 public/icon.png %{buildroot}%{_datadir}/pixmaps/heroic.png
 install -Dm644 dist/.icon-set/icon_16x16.png %{buildroot}%{_iconsdir}/hicolor/16x16/heroic.png
 install -Dm644 dist/.icon-set/icon_32x32.png %{buildroot}%{_iconsdir}/hicolor/32x32/heroic.png
@@ -83,23 +96,27 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/heroic.desktop
 %doc     README.md
 %doc     CODE_OF_CONDUCT.md
 %license COPYING
-%_datadir/heroic
-%_datadir/pixmaps/heroic.png
-%_bindir/heroic-games-launcher
-%_datadir/applications/heroic.desktop
-%_iconsdir/hicolor/16x16/heroic.png
-%_iconsdir/hicolor/32x32/heroic.png
-%_iconsdir/hicolor/48x48/heroic.png
-%_iconsdir/hicolor/64x64/heroic.png
-%_iconsdir/hicolor/128x128/heroic.png
-%_iconsdir/hicolor/256x256/heroic.png
-%_iconsdir/hicolor/512x512/heroic.png
-%_iconsdir/hicolor/1024x1024/heroic.png
+%license LICENSE
+%license LICENSE.electron.txt
+%license LICENSES.chromium.html
+%dir %{_datadir}/heroic
+%{_datadir}/heroic/*
+%{_datadir}/pixmaps/heroic.png
+%{_bindir}/heroic
+%{_bindir}/heroic-games-launcher
+%{_datadir}/applications/heroic.desktop
+%{_iconsdir}/hicolor/16x16/heroic.png
+%{_iconsdir}/hicolor/32x32/heroic.png
+%{_iconsdir}/hicolor/48x48/heroic.png
+%{_iconsdir}/hicolor/64x64/heroic.png
+%{_iconsdir}/hicolor/128x128/heroic.png
+%{_iconsdir}/hicolor/256x256/heroic.png
+%{_iconsdir}/hicolor/512x512/heroic.png
+%{_iconsdir}/hicolor/1024x1024/heroic.png
 
 %changelog
-* Thu Jan 30 2025 Gilver E. <rockgrub@disroot.org>
-- Initial package
 * Sun Mar 02 2025 Gilver E. <rockgrub@disroot.org>
 - Update to 2.16.0
 - Fix incorrect RPM dependencies
-
+* Thu Jan 30 2025 Gilver E. <rockgrub@disroot.org>
+- Initial package
