@@ -66,6 +66,8 @@ mv dist/linux-unpacked/* %{buildroot}%{_datadir}/heroic
 %endif
 mkdir -p %{buildroot}%{_bindir}
 ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/%{name}
+# Make both names executable
+ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/heroic
 install -Dm644 public/icon.png %{buildroot}%{_datadir}/pixmaps/heroic.png
 install -Dm644 dist/.icon-set/icon_16x16.png %{buildroot}%{_iconsdir}/hicolor/16x16/heroic.png
 install -Dm644 dist/.icon-set/icon_32x32.png %{buildroot}%{_iconsdir}/hicolor/32x32/heroic.png
