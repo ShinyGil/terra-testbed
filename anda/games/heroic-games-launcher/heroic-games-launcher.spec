@@ -14,10 +14,12 @@ Source0:       https://github.com/Heroic-Games-Launcher/%{git_name}/archive/refs
 Source1:       https://raw.githubusercontent.com/Heroic-Games-Launcher/%{git_name}/refs/heads/main/flatpak/com.heroicgameslauncher.hgl.desktop
 ### Makes it actually sign the package, though will say it was skipped first.
 Patch0:        afterPack.diff
+BuildRequires: bsdtar
 BuildRequires: desktop-file-utils
 ### Electron builder builds some things with GCC(++) and Make
 BuildRequires: gcc
 BuildRequires: gcc-c++
+BuildRequires: libxcrypt-compat
 BuildRequires: make
 BuildRequires: nodejs
 BuildRequires: pnpm
@@ -54,7 +56,7 @@ sed -i 's/Icon=.*/Icon=heroic/g' %{SOURCE1}
 %build
 pnpm install
 pnpm run download-helper-binaries
-pnpm dist:linux
+pnpm dist:linux pacman
 
 %install
 mkdir -p %{buildroot}%{_datadir}/heroic
