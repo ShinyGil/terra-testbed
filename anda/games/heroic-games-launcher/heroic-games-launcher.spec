@@ -56,8 +56,7 @@ sed -i 's/Icon=.*/Icon=heroic/g' %{SOURCE1}
 %build
 pnpm install
 pnpm run download-helper-binaries
-### RPM doesn't work and it needs a package format to generate icons, AppImage isn't a good option for packaging because it will try to self update
-pnpm dist:linux pacman
+pnpm dist:linux
 
 %install
 mkdir -p %{buildroot}%{_datadir}/heroic
