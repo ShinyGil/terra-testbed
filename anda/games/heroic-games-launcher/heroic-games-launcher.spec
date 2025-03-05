@@ -59,6 +59,7 @@ pnpm dist:linux
 
 %install
 mkdir -p %{buildroot}%{_datadir}/heroic
+mkdir -p %{buildroot}%{_licensedir}
 %ifarch aarch64
 mv $(find dist/linux-arm64-unpacked | grep -i LICENSE) %{buildroot}%{_licensedir}
 mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
