@@ -42,7 +42,6 @@ Recommends:    (extest if gnome-shell)
 Provides:      bundled(gogdl)
 Provides:      bundled(legendary)
 Provides:      bundled(nile)
-ExclusiveArch: x86_64
 AutoReq:       no
 Packager:      Gilver E. <rockgrub@disroot.org>
 
