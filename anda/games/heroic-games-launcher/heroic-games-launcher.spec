@@ -60,14 +60,14 @@ pnpm dist:linux
 %install
 mkdir -p %{buildroot}%{_datadir}/heroic
 %ifarch aarch64
+mv $(find dist/linux-arm64-unpacked | grep -i LICENSE) %{buildroot}%{_licensedir}
 mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
 %else
+mv $(find dist/linux-unpacked | grep -i LICENSE) %{buildroot}%{_licensedir}
 mv dist/linux-unpacked/* %{buildroot}%{_datadir}/heroic
 %endif
 mkdir -p %{buildroot}%{_bindir}
 ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/%{name}
-# Make both names executable
-ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/heroic
 install -Dm644 public/icon.png %{buildroot}%{_datadir}/pixmaps/heroic.png
 install -Dm644 dist/.icon-set/icon_16x16.png %{buildroot}%{_iconsdir}/hicolor/16x16/heroic.png
 install -Dm644 dist/.icon-set/icon_32x32.png %{buildroot}%{_iconsdir}/hicolor/32x32/heroic.png
@@ -86,6 +86,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/heroic.desktop
 %doc     README.md
 %doc     CODE_OF_CONDUCT.md
 %license COPYING
+%license LICENSE
+%license LICENSE.electron.txt
+%license LICENSES.chromium.html
 %{_datadir}/heroic
 %{_datadir}/pixmaps/heroic.png
 %{_bindir}/heroic-games-launcher
@@ -105,4 +108,3 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/heroic.desktop
 - Fix incorrect RPM dependencies
 * Thu Jan 30 2025 Gilver E. <rockgrub@disroot.org>
 - Initial package
-
