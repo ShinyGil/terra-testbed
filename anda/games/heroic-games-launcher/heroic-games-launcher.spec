@@ -12,7 +12,7 @@ License:       GPL-3.0-only AND MIT AND BSD-3-Clause
 URL:           https://heroicgameslauncher.com
 Source0:       https://raw.githubusercontent.com/Heroic-Games-Launcher/%{git_name}/refs/heads/main/flatpak/com.heroicgameslauncher.hgl.desktop
 ### Makes it actually sign the package, though will say it was skipped first.
-Patch0:        afterPack.diff
+#Patch0:        afterPack.diff
 BuildRequires: anda-srpm-macros
 BuildRequires: desktop-file-utils
 ### Electron builder builds some things with GCC(++), Git, and Make
@@ -50,7 +50,7 @@ Heroic is a Free and Open Source Epic, GOG, and Amazon Prime Games launcher for 
 %prep
 rm -rf ./*
 %git_clone https://github.com/Heroic-Games-Launcher/%{git_name} v%{version}
-%autopatch -p1
+#autopatch -p1
 sed -i 's/Exec=.*%u/Exec=\/usr\/share\/heroic\/heroic %U/g' %{SOURCE0}
 sed -i 's/Icon=.*/Icon=heroic/g' %{SOURCE0}
 
@@ -62,10 +62,10 @@ pnpm dist:linux
 %install
 mkdir -p %{buildroot}%{_datadir}/heroic
 %ifarch aarch64
-mv $(find dist/linux-arm64-unpacked -name "*LICENSE*") .
+mv $(find . -name "*LICENSE*") .
 mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
 %else
-mv $(find dist/linux-unpacked -name "*LICENSE*") .
+mv $(find . -name "*LICENSE*") .
 mv dist/linux-unpacked/* %{buildroot}%{_datadir}/heroic
 %endif
 mkdir -p %{buildroot}%{_bindir}
@@ -91,6 +91,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/heroic.desktop
 %doc     CODE_OF_CONDUCT.md
 %license COPYING
 %license LICENSE
+%license 
 %license LICENSE.electron.txt
 %license LICENSES.chromium.html
 %dir %{_datadir}/heroic
