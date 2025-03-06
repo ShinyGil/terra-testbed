@@ -18,6 +18,7 @@ BuildRequires: desktop-file-utils
 ### Electron builder builds some things with GCC(++) and Make
 BuildRequires: gcc
 BuildRequires: gcc-c++
+BuildRequires: git
 BuildRequires: make
 BuildRequires: nodejs
 BuildRequires: pnpm
