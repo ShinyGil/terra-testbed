@@ -62,10 +62,10 @@ pnpm dist:linux
 %install
 mkdir -p %{buildroot}%{_datadir}/heroic
 %ifarch aarch64
-mv $(find . -name "*LICENSE*") .
+mv $(find . -name "*LICENSE*" -not -path "./node_modules/*") .
 mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
 %else
-mv $(find . -name "*LICENSE*") .
+mv $(find . -name "*LICENSE*" -not -path "./node_modules/*") .
 mv dist/linux-unpacked/* %{buildroot}%{_datadir}/heroic
 %endif
 mkdir -p %{buildroot}%{_bindir}
