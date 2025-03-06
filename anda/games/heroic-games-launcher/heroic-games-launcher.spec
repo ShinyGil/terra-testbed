@@ -10,8 +10,7 @@ Release:       2%?dist
 Summary:       A games launcher for GOG, Amazon, and Epic Games
 License:       GPL-3.0-only AND MIT AND BSD-3-Clause
 URL:           https://heroicgameslauncher.com
-Source0:       https://github.com/Heroic-Games-Launcher/%{git_name}/archive/refs/tags/v%{version}.tar.gz
-Source1:       https://raw.githubusercontent.com/Heroic-Games-Launcher/%{git_name}/refs/heads/main/flatpak/com.heroicgameslauncher.hgl.desktop
+Source0:       https://raw.githubusercontent.com/Heroic-Games-Launcher/%{git_name}/refs/heads/main/flatpak/com.heroicgameslauncher.hgl.desktop
 ### Makes it actually sign the package, though will say it was skipped first.
 Patch0:        afterPack.diff
 BuildRequires: desktop-file-utils
@@ -48,9 +47,11 @@ Packager:      Gilver E. <rockgrub@disroot.org>
 Heroic is a Free and Open Source Epic, GOG, and Amazon Prime Games launcher for Linux, Windows, and macOS.
 
 %prep
-%autosetup -n %{git_name}-%{version} -p1
-sed -i 's/Exec=.*%u/Exec=\/usr\/share\/heroic\/heroic %U/g' %{SOURCE1}
-sed -i 's/Icon=.*/Icon=heroic/g' %{SOURCE1}
+rm -rf ./*
+%git_clone https://github.com/Heroic-Games-Launcher/%{git_name}.git v%{version}
+%autopatch -p1
+sed -i 's/Exec=.*%u/Exec=\/usr\/share\/heroic\/heroic %U/g' %{SOURCE0}
+sed -i 's/Icon=.*/Icon=heroic/g' %{SOURCE0}
 
 %build
 pnpm install
