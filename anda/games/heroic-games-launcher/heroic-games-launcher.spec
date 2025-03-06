@@ -91,7 +91,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/heroic.desktop
 %doc     CODE_OF_CONDUCT.md
 %license COPYING
 %license LICENSE
-%license 
+%license legendary.LICENSE
 %license LICENSE.electron.txt
 %license LICENSES.chromium.html
 %dir %{_datadir}/heroic
