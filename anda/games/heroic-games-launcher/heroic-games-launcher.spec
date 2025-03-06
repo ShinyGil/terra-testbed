@@ -60,9 +60,8 @@ pnpm dist:linux
 mkdir -p %{buildroot}%{_datadir}/heroic
 mv $(find . -name "*LICENSE*" -not -path "./node_modules/*" -and -not -path "./public/*") .
 %ifarch aarch64
-### Needs testing once aarch64 Heroic is complete, for now only remove Windows folder:
+### Needs testing once aarch64 Heroic is complete:
 #rm -rf dist/linux-unpacked/resources/app.asar.unpacked/build/bin/x64
-rm -rf dist/linux-unpacked/resources/app.asar.unpacked/build/bin/x64/win32
 mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
 %else
 rm -rf dist/linux-unpacked/resources/app.asar.unpacked/build/bin/arm64
