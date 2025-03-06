@@ -49,7 +49,7 @@ Heroic is a Free and Open Source Epic, GOG, and Amazon Prime Games launcher for 
 
 %prep
 rm -rf ./*
-%git_clone https://github.com/Heroic-Games-Launcher/%{git_name}.git v%{version}
+%git_clone https://github.com/Heroic-Games-Launcher/%{git_name} v%{version}
 %autopatch -p1
 sed -i 's/Exec=.*%u/Exec=\/usr\/share\/heroic\/heroic %U/g' %{SOURCE0}
 sed -i 's/Icon=.*/Icon=heroic/g' %{SOURCE0}
