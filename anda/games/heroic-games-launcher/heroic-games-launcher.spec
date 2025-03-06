@@ -81,7 +81,7 @@ install -Dm644 dist/.icon-set/icon_128x128.png %{buildroot}%{_iconsdir}/hicolor/
 install -Dm644 dist/.icon-set/icon_256x256.png %{buildroot}%{_iconsdir}/hicolor/256x256/heroic.png
 install -Dm644 dist/.icon-set/icon_512x512.png %{buildroot}%{_iconsdir}/hicolor/512x512/heroic.png
 install -Dm644 dist/.icon-set/icon_1024.png %{buildroot}%{_iconsdir}/hicolor/1024x1024/heroic.png
-install -Dm644 %{SOURCE1} %{buildroot}%{_datadir}/applications/heroic.desktop
+install -Dm644 %{SOURCE0} %{buildroot}%{_datadir}/applications/heroic.desktop
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/heroic.desktop
