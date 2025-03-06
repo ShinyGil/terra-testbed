@@ -13,8 +13,9 @@ URL:           https://heroicgameslauncher.com
 Source0:       https://raw.githubusercontent.com/Heroic-Games-Launcher/%{git_name}/refs/heads/main/flatpak/com.heroicgameslauncher.hgl.desktop
 ### Makes it actually sign the package, though will say it was skipped first.
 Patch0:        afterPack.diff
+BuildRequires: anda-srpm-macros
 BuildRequires: desktop-file-utils
-### Electron builder builds some things with GCC(++) and Make
+### Electron builder builds some things with GCC(++), Git, and Make
 BuildRequires: gcc
 BuildRequires: gcc-c++
 BuildRequires: git
