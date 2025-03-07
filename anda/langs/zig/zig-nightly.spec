@@ -63,13 +63,13 @@ Source2:        https://src.fedoraproject.org/rpms/zig/raw/rawhide/f/macros.zig
 # Remove native lib directories from rpath
 # this is unlikely to be upstreamed in its current state because upstream
 # wants to work around the shortcomings of NixOS
-Patch:          https://src.fedoraproject.org/fork/sentry/rpms/zig/blob/fork/0.14.0/f/0001-remove-native-lib-directories-from-rpath.patch
+Patch:          https://src.fedoraproject.org/fork/sentry/rpms/zig/raw/fork/0.14.0/f/0001-remove-native-lib-directories-from-rpath.patch
 # Adds a build option for setting the build-id
 # some projects are not programmed to handle a build-id's
 # by having it as a flag we can make sure no developer runs into
 # any trouble because of packaging demands
 # https://github.com/ziglang/zig/pull/22516
-Patch:          https://src.fedoraproject.org/fork/sentry/rpms/zig/blob/fork/0.14.0/f/0002-std.Build-add-build-id-option.patch
+Patch:          https://src.fedoraproject.org/fork/sentry/rpms/zig/raw/fork/0.14.0/f/0002-std.Build-add-build-id-option.patch
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
