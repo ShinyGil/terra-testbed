@@ -59,6 +59,7 @@ Source1:        %{url}/builds/zig-%{version}.tar.xz.minisig
 %else
 Source0:        %{url}/builds/zig-%{version}-%{prerelease}.tar.xz
 Source1:        %{url}/builds/zig-%{version}-%{prerelease}.tar.xz.minisig
+%endif
 Source2:        https://src.fedoraproject.org/rpms/zig/raw/rawhide/f/macros.zig
 # Remove native lib directories from rpath
 # this is unlikely to be upstreamed in its current state because upstream
@@ -113,30 +114,30 @@ and clarity. This package provides the zig compiler and the associated runtime.
 
 # The Zig stdlib only contains uncompiled code
 %package libs
-Summary:        %{name} Standard Library
+Summary:        Zig Standard Library
 BuildArch:      noarch
 
 %description libs
-%{name} Standard Library
+Zig Standard Library
 
 %if %{with docs}
 %package doc
-Summary:        Documentation for %{name}
+Summary:        Documentation for Zig
 BuildArch:      noarch
 Requires:       %{name} = %{version}
 
 %description doc
-Documentation for %{name}. For more information, visit %{url}
+Documentation for Zig. For more information, visit %{url}
 %endif
 
 %if %{with macro}
 %package        rpm-macros
-Summary:        Common RPM macros for %{name}
+Summary:        Common RPM macros for Zig
 Requires:       rpm
 BuildArch:      noarch
 
 %description    rpm-macros
-This package contains common RPM macros for %{name}.
+This package contains common RPM macros for Zig.
 %endif
 
 %prep
