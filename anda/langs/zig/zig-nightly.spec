@@ -9,7 +9,7 @@
 %endif
 %global         llvm_version 19.0.0
 %global         prerelease dev.3462+edabcf619
-%bcond bootstrap 0
+%bcond bootstrap 1
 %bcond docs      %{without bootstrap}
 %bcond macro     %{without bootstrap}
 %bcond test      1
