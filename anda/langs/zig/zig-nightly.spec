@@ -216,11 +216,11 @@ install -D -pv -m 0644 %{SOURCE2} %{buildroot}%{_rpmmacrodir}/macros.%{name}
 %license LICENSE
 %{_bindir}/zig
 %if %{without bootstrap}
-%{_mandir}/man1/%{name}.1.*
+%{_mandir}/man1/zig.1.*
 %endif
 
 %files libs
-%{_prefix}/lib/%{name}
+%{_prefix}/lib/zig
 
 %if %{with docs}
 %files doc
@@ -231,7 +231,7 @@ install -D -pv -m 0644 %{SOURCE2} %{buildroot}%{_rpmmacrodir}/macros.%{name}
 
 %if %{with macro}
 %files rpm-macros
-%{_rpmmacrodir}/macros.%{name}
+%{_rpmmacrodir}/macros.zig
 %endif
 
 %changelog
