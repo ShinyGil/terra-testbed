@@ -75,6 +75,7 @@ Patch:          https://src.fedoraproject.org/fork/sentry/rpms/zig/raw/fork/0.14
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
+BuildRequires:  libxml2-devel
 BuildRequires:  llvm%{?llvm_compat}-devel
 BuildRequires:  clang%{?llvm_compat}-devel
 BuildRequires:  lld%{?llvm_compat}-devel
