@@ -1,58 +1,47 @@
+# https://ziglang.org/download/VERSION/release-notes.html#Support-Table
 %global         zig_arches x86_64 aarch64 riscv64 %{mips64}
-### Signing key from https://ziglang.org/download
+# Signing key from https://ziglang.org/download/
 %global         public_key RWSGOq2NVecA2UPNdBUZykf1CCb147pkmdtYxgb3Ti+JO/wCYvhbAb/U
+
+# note here at which Fedora or EL release we need to use compat LLVM packages
+%if 0%{?fedora} >= 44 || 0%{?rhel} >= 9
+%define         llvm_compat 19
+%endif
 %global         llvm_version 19.0.0
-%global prerelease dev.3462+edabcf619
-%bcond bootstrap 1
-%bcond docs     %{without bootstrap}
-%bcond macro    %{without bootstrap}
-%bcond test     1
+%global         prerelease dev.3462+edabcf619
+%bcond bootstrap 0
+%bcond docs      %{without bootstrap}
+%bcond macro     %{without bootstrap}
+%bcond test      1
+%if 0%{?fedora} <= 40
+%global zig_cache_dir %{_builddir}/zig-cache
+%else
 %global zig_cache_dir %{builddir}/zig-cache
+%endif
 %global zig_build_options %{shrink: \
-	
     --verbose \
-	
     --release=fast \
-	
     --summary all \
-	
     \
-	
     -Dtarget=native \
-	
     -Dcpu=baseline \
-	
     --zig-lib-dir lib \
-	
+    --build-id=sha1 \
     \
-	
     --cache-dir "%{zig_cache_dir}" \
-	
     --global-cache-dir "%{zig_cache_dir}" \
-	
     \
-	
-    -Dversion-string="%{version}-%{prerelease}" \
-	
+    -Dversion-string="%{version}" \
     -Dstatic-llvm=false \
-	
     -Denable-llvm=true \
-	
     -Dno-langref=true \
-	
     -Dstd-docs=false \
-	
     -Dpie \
-	
     -Dconfig_h="%{__cmake_builddir}/config.h" \
-	
     -Dbuild-id="sha1" \
-	
 }
 %global zig_install_options %zig_build_options %{shrink: \
-	
     --prefix "%{_prefix}" \
-	
 }
 
 Name:           zig-nightly
@@ -61,9 +50,8 @@ Version:        0.14.0
 Release:        1%{?dist}
 %else
 Release:        0^%{prerelease}%{?dist}
-%endif
 Summary:        Programming language for maintaining robust, optimal, and reusable software
-License:        MIT and NCSA and LGPLv2+ and LGPLv2+ with exceptions and GPLv2+ and GPLv2+ with exceptions and BSD and Inner-Net and ISC and Public Domain and GFDL and ZPLv2.1
+License:        MIT AND NCSA AND LGPL-2.1-or-later AND LGPL-2.1-or-later WITH GCC-exception-2.0 AND GPL-2.0-or-later AND GPL-2.0-or-later WITH GCC-exception-2.0 AND BSD-3-Clause AND Inner-Net-2.0 AND ISC AND LicenseRef-Fedora-Public-Domain AND GFDL-1.1-or-later AND ZPL-2.1
 URL:            https://ziglang.org
 %if "%{prerelease}" == "1"
 Source0:        %{url}/builds/zig-%{version}.tar.xz
@@ -71,24 +59,27 @@ Source1:        %{url}/builds/zig-%{version}.tar.xz.minisig
 %else
 Source0:        %{url}/builds/zig-%{version}-%{prerelease}.tar.xz
 Source1:        %{url}/builds/zig-%{version}-%{prerelease}.tar.xz.minisig
-%endif
 Source2:        https://src.fedoraproject.org/rpms/zig/raw/rawhide/f/macros.zig
-### Support clean build of stage3 with temporary bootstrapped package | Modified to fix Rawhide/GCC 15 builds
-Patch0:         0000-Fedora-bootstrap-and-extra-build-flags-support.patch
-### There's no global option for build-id so enable it by default instead of patching every project's build.zig
-Patch1:         0001-Enable-build-id-by-default.patch
-### Zig fetch will recurse onto the cache directory, prevent that from happening.
-# https://github.com/ziglang/zig/pull/19951
-Patch2:         0002-fetch-prevent-global-cache-from-being-copied.patch
+# Remove native lib directories from rpath
+# this is unlikely to be upstreamed in its current state because upstream
+# wants to work around the shortcomings of NixOS
+Patch:          https://src.fedoraproject.org/fork/sentry/rpms/zig/blob/fork/0.14.0/f/0001-remove-native-lib-directories-from-rpath.patch
+# Adds a build option for setting the build-id
+# some projects are not programmed to handle a build-id's
+# by having it as a flag we can make sure no developer runs into
+# any trouble because of packaging demands
+# https://github.com/ziglang/zig/pull/22516
+Patch:          https://src.fedoraproject.org/fork/sentry/rpms/zig/blob/fork/0.14.0/f/0002-std.Build-add-build-id-option.patch
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
-BuildRequires:  llvm-devel
-BuildRequires:  clang-devel
-BuildRequires:  lld-devel
+BuildRequires:  llvm%{?llvm_compat}-devel
+BuildRequires:  clang%{?llvm_compat}-devel
+BuildRequires:  lld%{?llvm_compat}-devel
 BuildRequires:  zlib-devel
-BuildRequires:  libxml2-devel
+# for man page generation
 BuildRequires:  help2man
+# for signature verification
 BuildRequires:  minisign
 %if %{without bootstrap}
 BuildRequires:  %{name} = %{version}
@@ -98,132 +89,134 @@ BuildRequires:  elfutils-libelf-devel
 BuildRequires:  libstdc++-static
 %endif
 Requires:       %{name}-libs = %{version}
-Conflicts:	    zig
-### These packages are bundled as source
 # Apache-2.0 WITH LLVM-exception OR NCSA OR MIT
-Provides:      bundled(compiler-rt) = %{llvm_version}
-# LGPLv2+, LGPLv2+ with exceptions, GPLv2+, GPLv2+ with exceptions, BSD, Inner-Net, ISC, Public Domain and GFDL
-Provides:      bundled(glibc) = 2.34
+Provides: bundled(compiler-rt) = %{llvm_version}
+# LGPL-2.1-or-later AND SunPro AND LGPL-2.1-or-later WITH GCC-exception-2.0 AND BSD-3-Clause AND GPL-2.0-or-later AND LGPL-2.1-or-later WITH GNU-compiler-exception AND GPL-2.0-only AND ISC AND LicenseRef-Fedora-Public-Domain AND HPND AND CMU-Mach AND LGPL-2.0-or-later AND Unicode-3.0 AND GFDL-1.1-or-later AND GPL-1.0-or-later AND FSFUL AND MIT AND Inner-Net-2.0 AND X11 AND GPL-2.0-or-later WITH GCC-exception-2.0 AND GFDL-1.3-only AND GFDL-1.1-only
+Provides: bundled(glibc) = 2.41
 # Apache-2.0 WITH LLVM-exception OR MIT OR NCSA
-Provides:      bundled(libcxx) = %{llvm_version}
+Provides: bundled(libcxx) = %{llvm_version}
 # Apache-2.0 WITH LLVM-exception OR MIT OR NCSA
-Provides:      bundled(libcxxabi) = %{llvm_version}
+Provides: bundled(libcxxabi) = %{llvm_version}
 # NCSA
-Provides:      bundled(libunwind) = %{llvm_version}
+Provides: bundled(libunwind) = %{llvm_version}
 # BSD, LGPG, ZPL
-Provides:      bundled(mingw) = 10.0.0
+Provides: bundled(mingw) = 3839e21b08807479a31d5a9764666f82ae2f0356
 # MIT
-Provides:      bundled(musl) = 1.2.4
+Provides: bundled(musl) = 1.2.5
 # Apache-2.0 WITH LLVM-exception AND Apache-2.0 AND MIT AND BSD-2-Clause
-Provides:      bundled(wasi-libc) = 3189cd1ceec8771e8f27faab58ad05d4d6c369ef
-Provides:      zig-dev = %{version}-%{release}
+Provides: bundled(wasi-libc) = d03829489904d38c624f6de9983190f1e5e7c9c5
 ExclusiveArch: %{zig_arches}
-Packager:      ShinyGil <rockgrub@disroot.org>
 
 %description
 Zig is an open-source programming language designed for robustness, optimality,
-and clarity. This package provides dev (nightly) builds of Zig.
+and clarity. This package provides the zig compiler and the associated runtime.
 
-### The Zig stdlib only contains uncompiled code
+# The Zig stdlib only contains uncompiled code
 %package libs
-Summary:        Zig Standard Library
+Summary:        %{name} Standard Library
 BuildArch:      noarch
-Conflicts:	    zig-libs
 
 %description libs
-zig Standard Library
+%{name} Standard Library
 
 %if %{with docs}
 %package doc
-Summary:        Documentation for Zig
+Summary:        Documentation for %{name}
 BuildArch:      noarch
 Requires:       %{name} = %{version}
 
 %description doc
-Documentation for Zig. For more information, visit %{url}
+Documentation for %{name}. For more information, visit %{url}
 %endif
 
 %if %{with macro}
 %package        rpm-macros
-Summary:        Common RPM macros for zig
+Summary:        Common RPM macros for %{name}
 Requires:       rpm
 BuildArch:      noarch
 
 %description    rpm-macros
-This package contains common RPM macros for zig.
+This package contains common RPM macros for %{name}.
 %endif
 
 %prep
 /usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -P %{public_key}
 
-%if "%{prerelease}" == "1"
-%autosetup -p1 -n zig-%{version}
-%else
-%autosetup -p1 -n zig-%{version}-%{prerelease}
-%endif
-
+%autosetup -p1
 %if %{without bootstrap}
-### Ensure that the pre-build stage1 binary is not used
 rm -f stage1/zig1.wasm
 %endif
 
 %build
+
+# zig doesn't know how to dynamically link llvm on its own so we need cmake to generate a header ahead of time
+# if we provide the header we need to also build zigcpp
+
 # C_FLAGS: wasm2c output generates a lot of noise with -Wunused.
-# EXTRA_BUILD_ARGS: apply --build-id=sha1 even if running unpatched stage2 compiler.
-mkdir -p %{buildroot}%{_bindir}
+# EXTRA_BUILD_ARGS: explicitly specify a build-id
 %cmake \
     -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
     -DCMAKE_C_FLAGS_RELWITHDEBINFO:STRING="-DNDEBUG -Wno-unused" \
     -DCMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING="-DNDEBUG -Wno-unused" \
-    -DZIG_EXTRA_BUILD_ARGS:STRING="--verbose" \
+    \
+    -DZIG_EXTRA_BUILD_ARGS:STRING="--verbose;--build-id=sha1" \
     -DZIG_SHARED_LLVM:BOOL=true \
+    -DZIG_PIE:BOOL=true \
+    \
     -DZIG_TARGET_MCPU:STRING=baseline \
     -DZIG_TARGET_TRIPLE:STRING=native \
-    -DZIG_VERSION:STRING="%{version}" \
-    %{!?with_bootstrap:-DZIG_EXECUTABLE:STRING="/usr/bin/zig"}
-### Build only stage3 and dependencies. Skips stage1/2 if using /usr/bin/zig
+    \
+    -DZIG_VERSION:STRING="%{version}"
+
 %if %{with bootstrap}
 %cmake_build --target stage3
 %else
 %cmake_build --target zigcpp
 zig build %{zig_build_options}
+
 # Zig has no official manpage
 # https://github.com/ziglang/zig/issues/715
-help2man --no-discard-stderr --no-info "./zig-out/bin/zig" --version-option=version --output=%{name}.1
+help2man --no-discard-stderr --no-info "./zig-out/bin/zig" --version-option=version --output=zig.1
 %endif
 
+
 %if %{with docs}
-"%{__cmake_builddir}/stage3/bin/zig" build docs --verbose -Dversion-string="%{version}"
+# Use the newly made stage 3 compiler to generate docs
+./zig-out/bin/zig build docs \
+    --verbose \
+    --global-cache-dir "%{zig_cache_dir}" \
+    -Dversion-string="%{version}"
 %endif
 
 %install
-# Ignore standard RPATH for now
-export QA_RPATHS=$(( 0x0001 ))
 %if %{with bootstrap}
 %cmake_install
 %else
 DESTDIR="%{buildroot}" zig build install %{zig_install_options}
+
+install -D -pv -m 0644 -t %{buildroot}%{_mandir}/man1/zig.1
 %endif
 
-install -D -pv -m 0644 -t %{buildroot}%{_mandir}/man1/ zig.1
 
 %if %{with macro}
-install -D -pv -m 0644 %{SOURCE2} %{buildroot}%{_rpmmacrodir}/macros.zig
+install -D -pv -m 0644 %{SOURCE2} %{buildroot}%{_rpmmacrodir}/macros.%{name}
 %endif
 
 %if %{with test}
 %check
 # Run reduced set of tests, based on the Zig CI
-"%{__cmake_builddir}/stage3/bin/zig" test test/behavior.zig -Itest
+"%{buildroot}%{_bindir}/zig" test test/behavior.zig -Itest
 %endif
 
 %files
 %license LICENSE
 %{_bindir}/zig
-%{_mandir}/man1/zig.1.*
+%if %{without bootstrap}
+%{_mandir}/man1/%{name}.1.*
+%endif
 
 %files libs
-%{_prefix}/lib/zig
+%{_prefix}/lib/%{name}
 
 %if %{with docs}
 %files doc
@@ -234,7 +227,7 @@ install -D -pv -m 0644 %{SOURCE2} %{buildroot}%{_rpmmacrodir}/macros.zig
 
 %if %{with macro}
 %files rpm-macros
-%{_rpmmacrodir}/macros.zig
+%{_rpmmacrodir}/macros.%{name}
 %endif
 
 %changelog
