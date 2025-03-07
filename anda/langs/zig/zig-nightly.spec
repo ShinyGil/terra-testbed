@@ -144,9 +144,10 @@ This package contains common RPM macros for Zig.
 %prep
 /usr/bin/minisign -V -m %{SOURCE0} -x %{SOURCE1} -P %{public_key}
 
-%autosetup -p1
-%if %{without bootstrap}
-rm -f stage1/zig1.wasm
+%if "%{prerelease}" == "1"
+%autosetup -p1 -n zig-%{version}
+%else
+%autosetup -p1 -n zig-%{version}-%{prerelease}
 %endif
 
 %build
