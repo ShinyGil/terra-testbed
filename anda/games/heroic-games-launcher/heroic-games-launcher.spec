@@ -80,7 +80,6 @@ mkdir -p %{buildroot}%{_bindir}
 # Make names executable
 ln -sr %{_datadir}/%{shortname}/%{shortname} %{buildroot}%{_bindir}/%{name}
 ln -sr %{_datadir}/%{shortname}/%{shortname} %{buildroot}%{_bindir}/%{shortname}
-install -Dm644 public/icon.png %{buildroot}%{_datadir}/pixmaps/%{shortname}.png
 install -Dm644 dist/.icon-set/icon_16x16.png %{buildroot}%{_iconsdir}/hicolor/16x16/%{shortname}.png
 install -Dm644 dist/.icon-set/icon_32x32.png %{buildroot}%{_iconsdir}/hicolor/32x32/%{shortname}.png
 install -Dm644 dist/.icon-set/icon_48x48.png %{buildroot}%{_iconsdir}/hicolor/48x48/%{shortname}.png
@@ -104,7 +103,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{shortname}.desktop
 %license LICENSES.chromium.html
 %dir %{_datadir}/%{shortname}
 %{_datadir}/%{shortname}/*
-%{_datadir}/pixmaps/%{shortname}.png
 %{_bindir}/%{shortname}
 %{_bindir}/%{name}
 %{_datadir}/applications/%{shortname}.desktop
