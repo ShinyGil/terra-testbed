@@ -3,7 +3,7 @@
 %ifnarch aarch64 
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(*\\aarch64*\\.so.*))$
 %elifarch aarch64
-%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\[.]so.*)|(*\\x86_64*\\.so.*)|(*\\x86-64*\\.so.*))$
+%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(*\\x86_64*\\.so.*)|(*\\x86-64*\\.so.*))$
 %endif
 %define _build_id_links none
 %global org_name Heroic-Games-Launcher
@@ -32,12 +32,8 @@ BuildRequires: pnpm
 BuildRequires: python3
 BuildRequires: sed
 Requires:      alsa-lib
-Requires:      atk
-Requires:      at-spi2-core
 Requires:      gtk3
 Requires:      hicolor-icon-theme
-Requires:      libXext
-Requires:      libXfixes
 Requires:      nss
 Requires:      python3
 Requires:      which
