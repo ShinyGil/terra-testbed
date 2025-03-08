@@ -2,7 +2,7 @@
 
 # Exclude private libraries since this is bundled with electron
 %global __provides_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
-%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(*\\gcc*\\.so.*))$
+%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
 
 # macro shorthand for calling pnpm
 %global pnpm npx pnpm@%{pnpm_version}
