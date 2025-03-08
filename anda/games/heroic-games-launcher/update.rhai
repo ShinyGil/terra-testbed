@@ -3,6 +3,7 @@ let v = gh("Heroic-Games-Launcher/HeroicGamesLauncher");
 let vv = v;
 v.crop(1);
 rpm.version(v);
+// Versions for bundled binaries. Most important for Legendary as Fedora packages this.
 if rpm.changed() {
     let html = gh_rawfile("Heroic-Games-Launcher/HeroicGamesLauncher", vv, "meta/downloadHelperBinaries.ts");
     let lv = find("legendary: '([\\d.]+)'", html, 1);
