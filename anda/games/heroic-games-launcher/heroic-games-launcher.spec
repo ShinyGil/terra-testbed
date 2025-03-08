@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 %global __provides_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
 %ifnarch aarch64 
-%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(*\\aarch64[.]so.*))$
+%global __requires_exclude ^((*\\aarch64*\\.so.*)|(libffmpeg[.]so.*)|(lib.*\\.so.*)|)$
 %else
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
 %endif
