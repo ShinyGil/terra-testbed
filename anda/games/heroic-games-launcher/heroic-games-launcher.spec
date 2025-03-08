@@ -2,7 +2,7 @@
 %global __provides_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
 %ifnarch aarch64 
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(*\\aarch64*\\.so.*))$
-%elifnarch x86_64
+%elifarch aarch64
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(*\\x86_64*\\.so.*))$
 %endif
 %define _build_id_links none
