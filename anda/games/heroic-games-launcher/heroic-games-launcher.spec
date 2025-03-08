@@ -2,8 +2,8 @@
 %global __provides_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
 %ifnarch aarch64 
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(*\\aarch64*\\.so.*))$
-%else
-%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
+%elifnarch x86_64
+%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(*\\x86_64*\\.so.*))$
 %endif
 %define _build_id_links none
 %global org_name Heroic-Games-Launcher
