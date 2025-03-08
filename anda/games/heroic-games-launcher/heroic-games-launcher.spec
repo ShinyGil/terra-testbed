@@ -3,6 +3,10 @@
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
 %define _build_id_links none
 %global git_name HeroicGamesLauncher
+%global legendary_version 0.20.36
+%global gogdl_version 1.1.2
+%global nile_version 1.1.2
+%global comet_version 0.2.0
 
 Name:          heroic-games-launcher
 Version:       2.16.0
@@ -36,9 +40,10 @@ Recommends:    mangohud
 Recommends:    umu-launcher
 # Workaround for GNOME issues with libei
 Recommends:    (extest if gnome-shell)
-Provides:      bundled(gogdl)
-Provides:      bundled(legendary)
-Provides:      bundled(nile)
+Provides:      bundled(comet) = %{comet_version}
+Provides:      bundled(gogdl) = %{gogdl_version}
+Provides:      bundled(legendary) = %{legendary_version}
+Provides:      bundled(nile) = %{nile_version}
 AutoReq:       no
 Packager:      Gilver E. <rockgrub@disroot.org>
 
