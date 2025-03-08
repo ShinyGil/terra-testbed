@@ -1,6 +1,10 @@
 %global debug_package %{nil}
 %global __provides_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
+%ifnarch aarch64 
+%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(*\\aarch64[.]so.*))$
+%else
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
+%endif
 %define _build_id_links none
 %global org_name Heroic-Games-Launcher
 %global git_name %(echo %{org_name} | sed 's/-//g')
@@ -48,7 +52,6 @@ Provides:      bundled(comet) = %{comet_version}
 Provides:      bundled(gogdl) = %{gogdl_version}
 Provides:      bundled(legendary) = %{legendary_version}
 Provides:      bundled(nile) = %{nile_version}
-AutoReq:       no
 Packager:      Gilver E. <rockgrub@disroot.org>
 
 %description
