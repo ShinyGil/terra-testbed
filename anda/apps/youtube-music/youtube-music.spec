@@ -2,7 +2,7 @@
 
 # Exclude private libraries since this is bundled with electron
 %global __provides_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
-%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
+%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(*\\gcc*\\.so.*))$
 
 # macro shorthand for calling pnpm
 %global pnpm npx pnpm@%{pnpm_version}
@@ -35,7 +35,6 @@ BuildRequires:  pnpm nodejs20
 Requires:       nss
 Requires:       libXext
 Requires:       libXfixes
-AutoReq:        no
 
 %description
 YouTube Music Desktop App bundled with custom plugins (and built-in ad blocker / downloader)
