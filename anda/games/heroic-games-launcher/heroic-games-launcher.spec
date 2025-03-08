@@ -2,19 +2,20 @@
 %global __provides_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
 %define _build_id_links none
-%global git_name HeroicGamesLauncher
+%global org_name Heroic-Games-Launcher
+%global git_name %(echo %{org_name} | sed 's/-//g'
+%global shortname heroic
 %global legendary_version 0.20.36
 %global gogdl_version 1.1.2
 %global nile_version 1.1.2
 %global comet_version 0.2.0
 
-Name:          heroic-games-launcher
+Name:          %{shortname}-games-launcher
 Version:       2.16.0
 Release:       2%?dist
 Summary:       A games launcher for GOG, Amazon, and Epic Games
 License:       GPL-3.0-only AND MIT AND BSD-3-Clause
 URL:           https://heroicgameslauncher.com
-Source0:       https://raw.githubusercontent.com/Heroic-Games-Launcher/%{git_name}/refs/heads/main/flatpak/com.heroicgameslauncher.hgl.desktop
 BuildRequires: anda-srpm-macros
 BuildRequires: desktop-file-utils
 ### Electron builder builds some things with GCC(++), Git, and Make
@@ -40,6 +41,8 @@ Recommends:    mangohud
 Recommends:    umu-launcher
 # Workaround for GNOME issues with libei
 Recommends:    (extest if gnome-shell)
+# Easier install
+Provides:      %{shortname} = %{version}-%{release}
 Provides:      bundled(comet) = %{comet_version}
 Provides:      bundled(gogdl) = %{gogdl_version}
 Provides:      bundled(legendary) = %{legendary_version}
@@ -52,9 +55,9 @@ Heroic is a Free and Open Source Epic, GOG, and Amazon Prime Games launcher for 
 
 %prep
 rm -rf ./*
-%git_clone https://github.com/Heroic-Games-Launcher/%{git_name} v%{version}
-sed -i 's/Exec=.*%u/Exec=\/usr\/share\/heroic\/heroic %U/g' %{SOURCE0}
-sed -i 's/Icon=.*/Icon=heroic/g' %{SOURCE0}
+%git_clone https://github.com/%{org_name}/%{git_name} v%{version}
+sed -i 's/Exec=.*%u/Exec=\/usr\/share\/%{shortname}\/%{shortname} %U/g' flatpak/com.heroicgameslauncher.hgl.desktop
+sed -i 's/Icon=.*/Icon=%{shortname}/g' flatpak/com.heroicgameslauncher.hgl.desktop
 
 %build
 pnpm install
@@ -62,7 +65,7 @@ pnpm run download-helper-binaries
 pnpm dist:linux
 
 %install
-mkdir -p %{buildroot}%{_datadir}/heroic
+mkdir -p %{buildroot}%{_datadir}/%{shortname}
 mv $(find . -name "*LICENSE*" -not -path "./node_modules/*" -and -not -path "./public/*") .
 %ifarch aarch64
 ### Needs testing once aarch64 Heroic is complete:
@@ -70,25 +73,25 @@ mv $(find . -name "*LICENSE*" -not -path "./node_modules/*" -and -not -path "./p
 mv dist/linux-arm64-unpacked/* %{buildroot}%{_datadir}/heroic
 %else
 rm -rf dist/linux-unpacked/resources/app.asar.unpacked/build/bin/arm64
-mv dist/linux-unpacked/* %{buildroot}%{_datadir}/heroic
+mv dist/linux-unpacked/* %{buildroot}%{_datadir}/%{shortname}
 %endif
 mkdir -p %{buildroot}%{_bindir}
 # Make names executable
-ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/%{name}
-ln -sr %{_datadir}/heroic/heroic %{buildroot}%{_bindir}/heroic
-install -Dm644 public/icon.png %{buildroot}%{_datadir}/pixmaps/heroic.png
-install -Dm644 dist/.icon-set/icon_16x16.png %{buildroot}%{_iconsdir}/hicolor/16x16/heroic.png
-install -Dm644 dist/.icon-set/icon_32x32.png %{buildroot}%{_iconsdir}/hicolor/32x32/heroic.png
-install -Dm644 dist/.icon-set/icon_48x48.png %{buildroot}%{_iconsdir}/hicolor/48x48/heroic.png
-install -Dm644 dist/.icon-set/icon_64x64.png %{buildroot}%{_iconsdir}/hicolor/64x64/heroic.png
-install -Dm644 dist/.icon-set/icon_128x128.png %{buildroot}%{_iconsdir}/hicolor/128x128/heroic.png
-install -Dm644 dist/.icon-set/icon_256x256.png %{buildroot}%{_iconsdir}/hicolor/256x256/heroic.png
-install -Dm644 dist/.icon-set/icon_512x512.png %{buildroot}%{_iconsdir}/hicolor/512x512/heroic.png
-install -Dm644 dist/.icon-set/icon_1024.png %{buildroot}%{_iconsdir}/hicolor/1024x1024/heroic.png
-install -Dm644 %{SOURCE0} %{buildroot}%{_datadir}/applications/heroic.desktop
+ln -sr %{_datadir}/%{shortname}/%{shortname} %{buildroot}%{_bindir}/%{name}
+ln -sr %{_datadir}/%{shortname}/%{shortname} %{buildroot}%{_bindir}/%{shortname}
+install -Dm644 public/icon.png %{buildroot}%{_datadir}/pixmaps/%{shortname}.png
+install -Dm644 dist/.icon-set/icon_16x16.png %{buildroot}%{_iconsdir}/hicolor/16x16/%{shortname}.png
+install -Dm644 dist/.icon-set/icon_32x32.png %{buildroot}%{_iconsdir}/hicolor/32x32/%{shortname}.png
+install -Dm644 dist/.icon-set/icon_48x48.png %{buildroot}%{_iconsdir}/hicolor/48x48/%{shortname}.png
+install -Dm644 dist/.icon-set/icon_64x64.png %{buildroot}%{_iconsdir}/hicolor/64x64/%{shortname}.png
+install -Dm644 dist/.icon-set/icon_128x128.png %{buildroot}%{_iconsdir}/hicolor/128x128/%{shortname}.png
+install -Dm644 dist/.icon-set/icon_256x256.png %{buildroot}%{_iconsdir}/hicolor/256x256/%{shortname}.png
+install -Dm644 dist/.icon-set/icon_512x512.png %{buildroot}%{_iconsdir}/hicolor/512x512/%{shortname}.png
+install -Dm644 dist/.icon-set/icon_1024.png %{buildroot}%{_iconsdir}/hicolor/1024x1024/%{shortname}.png
+install -Dm644 flatpak/com.heroicgameslauncher.hgl.desktop %{buildroot}%{_datadir}/applications/%{shortname}.desktop
 
 %check
-desktop-file-validate %{buildroot}%{_datadir}/applications/heroic.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{shortname}.desktop
 
 %files
 %doc     README.md
@@ -98,20 +101,20 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/heroic.desktop
 %license legendary.LICENSE
 %license LICENSE.electron.txt
 %license LICENSES.chromium.html
-%dir %{_datadir}/heroic
-%{_datadir}/heroic/*
-%{_datadir}/pixmaps/heroic.png
-%{_bindir}/heroic
-%{_bindir}/heroic-games-launcher
-%{_datadir}/applications/heroic.desktop
-%{_iconsdir}/hicolor/16x16/heroic.png
-%{_iconsdir}/hicolor/32x32/heroic.png
-%{_iconsdir}/hicolor/48x48/heroic.png
-%{_iconsdir}/hicolor/64x64/heroic.png
-%{_iconsdir}/hicolor/128x128/heroic.png
-%{_iconsdir}/hicolor/256x256/heroic.png
-%{_iconsdir}/hicolor/512x512/heroic.png
-%{_iconsdir}/hicolor/1024x1024/heroic.png
+%dir %{_datadir}/%{shortname}
+%{_datadir}/%{shortname}/*
+%{_datadir}/pixmaps/%{shortname}.png
+%{_bindir}/%{shortname}
+%{_bindir}/%{name}
+%{_datadir}/applications/%{shortname}.desktop
+%{_iconsdir}/hicolor/16x16/%{shortname}.png
+%{_iconsdir}/hicolor/32x32/%{shortname}.png
+%{_iconsdir}/hicolor/48x48/%{shortname}.png
+%{_iconsdir}/hicolor/64x64/%{shortname}.png
+%{_iconsdir}/hicolor/128x128/%{shortname}.png
+%{_iconsdir}/hicolor/256x256/%{shortname}.png
+%{_iconsdir}/hicolor/512x512/%{shortname}.png
+%{_iconsdir}/hicolor/1024x1024/%{shortname}.png
 
 %changelog
 * Sun Mar 02 2025 Gilver E. <rockgrub@disroot.org>
