@@ -26,6 +26,7 @@ BuildRequires: make
 BuildRequires: nodejs
 BuildRequires: pnpm
 BuildRequires: python3
+BuildRequires: sed
 Requires:      alsa-lib
 Requires:      atk
 Requires:      at-spi2-core
