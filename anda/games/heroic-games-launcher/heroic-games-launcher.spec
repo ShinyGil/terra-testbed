@@ -3,7 +3,7 @@
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
 %define _build_id_links none
 %global org_name Heroic-Games-Launcher
-%global git_name %(echo %{org_name} | sed 's/-//g'
+%global git_name %(echo %{org_name} | sed 's/-//g')
 %global shortname heroic
 %global legendary_version 0.20.36
 %global gogdl_version 1.1.2
