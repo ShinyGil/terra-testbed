@@ -5,6 +5,7 @@
 %global commit_date 20240109
 %global commit_date 20240109
 %global commit_date 20240109
+%global commit_date 20240109
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global commit_date 20240109
 %global ver 
