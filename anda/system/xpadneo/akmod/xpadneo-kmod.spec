@@ -5,6 +5,8 @@
 %global commit_date 20241224
 %global commit_date 20241224
 %global commit_date 20241224
+%global commit_date 20241224
+%global commit_date 20241224
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global ver 0.9.7
 %define buildforkernels akmod
