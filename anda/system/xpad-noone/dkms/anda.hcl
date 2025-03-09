@@ -1,9 +1,9 @@
 project pkg {
         arches = ["x86_64"]
 	rpm {
-		spec = "xpadneo.spec"
+		spec = "dkms-xpad-noone.spec"
 	}
 	labels {
-		nightly = 1
+		mock = 1
 	}
 }

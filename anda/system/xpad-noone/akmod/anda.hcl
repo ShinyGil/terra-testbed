@@ -1,6 +1,6 @@
 project pkg {
 	rpm {
-		spec = "xpadneo-kmod.spec"
+		spec = "xpad-noone-kmod.spec"
 	}
 	labels {
 		mock = 1
