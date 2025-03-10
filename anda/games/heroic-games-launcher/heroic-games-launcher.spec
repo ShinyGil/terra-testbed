@@ -40,8 +40,6 @@ Requires:      which
 Recommends:    gamemode
 Recommends:    mangohud
 Recommends:    umu-launcher
-# Workaround for GNOME issues with libei
-Recommends:    (extest if gnome-shell)
 # Easier install
 Provides:      %{shortname} = %{version}-%{release}
 Provides:      bundled(comet) = %{comet_version}
